@@ -10867,6 +10867,20 @@ a:focus {
   background-repeat: no-repeat;
 }
 
+.bg-login-image-staff {
+  background: url("../img/logostaff.jpg");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.bg-login-image-customer {
+  background: url("../img/logocustomer.jpg");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
 .bg-register-image {
   background: url("../img/logo.jpg");
   background-position: center;
