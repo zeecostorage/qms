@@ -38,7 +38,7 @@
                                         <a class="small" href="forgot-password.html">Forgot Password?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="../register/form.php">Create an Account!</a>
+                                        <a class="small" href="../registerStaff/form.php">Create an Account!</a>
                                     </div>
                                 </div>
                             </div>

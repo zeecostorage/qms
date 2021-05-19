@@ -25,7 +25,7 @@ if($result > 0){
 }
 else{
 	echo "<script>alert ('Failed to Register');</script>";
-	echo "<script>window.location.href='http://localhost/zeestorage/qms/register/form.php'; </script>";
+	echo "<script>window.location.href='http://localhost/zeestorage/qms/registerStaff/form.php'; </script>";
 }
 
 mysqli_close($con);
