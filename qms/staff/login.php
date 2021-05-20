@@ -21,7 +21,7 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form class="user" action="login.php" method="POST">
+                                    <form class="user" action="checking.php" method="POST">
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
                                                 id="email" name="email" aria-describedby="emailHelp"
@@ -38,7 +38,7 @@
                                         <a class="small" href="forgot-password.html">Forgot Password?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="../register/form.php">Create an Account!</a>
+                                        <a class="small" href="../staff/register.php">Create an Account!</a>
                                     </div>
                                 </div>
                             </div>
