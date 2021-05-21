@@ -16,8 +16,9 @@
 	}
 
 	if($exist > 0){
-		$_SESSION['email'] = $_POST['email'];
+		$_SESSION['staff_id'] = $_POST['email'];
 		$_SESSION['user_type'] = "1";
+		$_SESSION['company_id'] = $_POST['email'];
 		
 		echo "<script>window.location.href='../dashboardStaff/index.php'; </script>";
 	}
