@@ -16,7 +16,7 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Register Company</h1>
                             </div>
-                            <form class="user" action="add.php" method="POST">
+                            <form class="user" id="register" action="add.php" method="POST">
                                 <div class="form-group ">
                                         <input type="text" class="form-control form-control-user" id="fullname" name="fullname"
                                             placeholder="Company Name">
@@ -70,3 +70,21 @@
 </body>
 
 <?php include '../../config/footer.php'; ?>
+
+<script type="text/javascript">
+    $( document ).ready(function() {
+
+        $("#submit").click(function(){
+            var password = $("#password").val(); 
+            var repeatPassword = $("#repeatPassword").val(); 
+
+            if(password != repeatPassword){
+                $("#repeatPassword").css("border", "1px solid red");
+                alert("Please enter the same password");
+            }else{
+                $( "#register" ).submit();
+            }
+        });
+
+    });
+</script>

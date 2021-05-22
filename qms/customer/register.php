@@ -142,23 +142,12 @@
             var repeatPassword = $("#repeatPassword").val(); 
 
             if(password != repeatPassword){
+                $("#repeatPassword").css("border", "1px solid red");
                 alert("Please enter the same password");
             }else{
                 $( "#register" ).submit();
             }
         });
 
-        $("#repeatPassword").keyup(function(){
-            var password = $("#password").val(); 
-
-            console.log(password);
-            console.log(this.value);
-
-            if(password != this.value){
-                $("#repeatPassword").css("border", "1px solid red");
-            }else{
-                $("#repeatPassword").css("border", "1px solid #d1d3e2");
-            }
-        });
     });
 </script>

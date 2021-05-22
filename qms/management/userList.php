@@ -1,6 +1,7 @@
 <?php 
     include '../../config/header.php'; 
-    include '../../controller/userController.php'; 
+    include '../../controller/userController.php';  
+    include '../../config/lkp.php'; 
 
 ?>
     
@@ -64,7 +65,7 @@
 
                                             foreach ($user_list as $value) {
                                                 echo '<tr>';
-                                                echo '<td>'.$value['firstname'].'</td>';
+                                                echo '<td><a href="#" id="edit" data-toggle="modal" data-target="#formStaff" onclick="getUserDetail(this)" data-myval="'.$value['email'].'">'.$value['firstname'].'</a></td>';
                                                 echo '<td>'.$value['lastname'].'</td>';
                                                 echo '<td>'.$value['email'].'</td>';
                                                 echo '<td>'.$value['contact'].'</td>';
@@ -123,7 +124,9 @@
                     <div class="container">
                         <div class="card o-hidden border-0 ">
                             <div class="card-body p-0">
-                                <form class="user" id="register" action="add.php" method="POST">
+                                <form id="register" action="add.php" method="POST">
+                                    <input type="hidden" name="action" id="action">
+                                    <input type="hidden" name="mode" id="mode">
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
                                             <input type="text" class="form-control form-control-user" id="firstname" name="firstname"
@@ -134,22 +137,30 @@
                                                 placeholder="Last Name *" required>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <input type="email" class="form-control form-control-user" id="email" name="email"
-                                            placeholder="Email Address *" required>
+                                    <div class="form-group row">
+                                        <div class="col-sm-6">
+                                            <input type="email" class="form-control form-control-user" id="email" name="email"
+                                                placeholder="Email Address *" required>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control form-control-user" id="contact" name="contact"
+                                                placeholder="Contact Number *" required>
+                                        </div>
                                     </div>
-                                    <div class="form-group ">
-                                        <input type="text" class="form-control form-control-user" id="street" name="street"
-                                            placeholder="Street *" required>
-                                    </div>
-                                    <div class="form-group ">
-                                        <input type="text" class="form-control form-control-user" id="street2" name="street2"
-                                            placeholder="Street">
+                                    <div class="form-group row">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                            <input type="text" class="form-control form-control-user" id="street" name="street"
+                                                placeholder="Street *" required>
+                                        </div>
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                            <input type="text" class="form-control form-control-user" id="street2" name="street2"
+                                                placeholder="Street">
+                                        </div>
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
                                             <input type="text" class="form-control form-control-user" id="postcode" name="postcode"
-                                                placeholder="Postcode *" required>
+                                                placeholder="Postcode *">
                                         </div>
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control form-control-user" id="city" name="city"
@@ -158,8 +169,40 @@
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
+                                            <select class="form-control  form-control-user" id="state" name="state" aria-label="Default select example" required>
+                                              <option selected>State *</option>
+
+                                                <?php
+                                                    
+                                                    $lkpState = getLkpState($con);
+
+                                                    foreach($lkpState as $value) {
+                                                        echo '<option value="'.$value['id'].'">'.$value['name'].'</option>';
+                                                    }
+
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <select class="form-control form-control-user" id="country" name="country" aria-label="Default select example" required>
+                                              <option selected>Country *</option>
+                                              
+                                                <?php
+                                                    
+                                                    $lkpCountry = getLkpCountry($con);
+
+                                                    foreach($lkpCountry as $value) {
+                                                        echo '<option value="'.$value['id'].'">'.$value['name'].'</option>';
+                                                    }
+
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-6 mb-3 mb-sm-0">
                                             <input type="password" class="form-control form-control-user"
-                                                id="password" name="password *" placeholder="Password" required>
+                                                id="password" name="password" placeholder="Password *" required>
                                         </div>
                                         <div class="col-sm-6">
                                             <input type="password" class="form-control form-control-user" id="repeatPassword" name="repeatPassword" placeholder="Repeat Password *" required>
@@ -167,7 +210,7 @@
                                     </div>
                                     <br>
                                     <input type="submit" id="submit" class="btn btn-primary" value="Save">
-                                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
                                 </form>
                             </div>
                         </div>
@@ -204,8 +247,227 @@
 
 <script type="text/javascript">
     $( document ).ready(function() {
+
+        $("#cancel").click(function(){
+            close();
+        });
+
+        $("button.close").click(function(){
+            close();
+        });
+
         $("#formStaffButton").click(function(){
             $("#exampleModalLabel").html("Add New Staff");
+            $("#password").attr("placeholder", "Password *");
+            $("#repeatPassword").attr("placeholder", "Repeat Password *");
+        });
+
+        $("#submit").click(function(event){
+            event.preventDefault();
+
+            var firstname       = $("#firstname").val();
+            var lastname        = $("#lastname").val();
+            var email           = $("#email").val();
+            var contact         = $("#contact").val();
+            var street          = $("#street").val();
+            var postcode        = $("#postcode").val();
+            var city            = $("#city").val();
+            var state           = $("#state").val();
+            var country         = $("#country").val();
+            var password        = $("#password").val();
+            var repeatPassword  = $("#repeatPassword").val();
+            var mode            = $("#mode").val();
+
+            var flag = 0;
+
+            if(firstname == ""){
+                var flag = 1;
+            }
+            if(lastname == ""){
+                var flag = 1;
+            }
+            if(email == ""){
+                var flag = 1;
+            }
+            if(contact == ""){
+                var flag = 1;
+            }
+            if(street == ""){
+                var flag = 1;
+            }
+            if(postcode == ""){
+                var flag = 1;
+            }
+            if(city == ""){
+                var flag = 1;
+            }
+            if(state == ""){
+                var flag = 1;
+            }
+            if(country == ""){
+                var flag = 1;
+            }
+            if(mode != "2"){
+                if(password == ""){
+                    var flag = 1;
+                }
+                if(repeatPassword == ""){
+                    var flag = 1;
+                }
+                if(password != repeatPassword){
+                    $("#repeatPassword").css("border", "1px solid red");
+                    alert("Please enter the same password");
+                    flag = 2;
+
+                }
+            }else if(mode == "2"){
+                if(password != "" && repeatPassword != ""){
+                    if(password != repeatPassword){
+                        $("#repeatPassword").css("border", "1px solid red");
+                        alert("Please enter the same password");
+                        flag = 2;
+
+                    }
+                }
+            }
+
+            if(flag == 0 && mode != "2"){
+
+                $("#action").val("checkingEmail");
+
+                var form_value = $('#register').serialize();
+                console.log(form_value);
+
+                jQuery.ajax({
+                    type : "post",
+                    url : "../../controller/userController.php",
+                    data : form_value,
+                    // dataType : 'json',
+                    // async: false,
+                    success:function(data){
+                        
+                        console.log(data);
+                        if(data == "0"){
+                            save();
+                        }
+                        // cancel
+                    },
+                    error: function(msg) {
+                    }
+                });
+
+            }else if(flag == 0 && mode == "2"){
+                
+
+                $("#action").val("editUser");
+
+                var form_value = $('#register').serialize();
+                console.log(form_value);
+
+                jQuery.ajax({
+                    type : "post",
+                    url : "../../controller/userController.php",
+                    data : form_value,
+                    // dataType : 'json',
+                    // async: false,
+                    success:function(data){
+
+                        alert("Successfully edit staff.");
+                        $("#cancel").click();
+                        location.reload();
+                        // cancel
+                    },
+                    error: function(msg) {
+                    }
+                });
+            }else if(flag == 1){
+                alert("Please insert the mandatory field");
+            }
         });
     });
+
+    function getUserDetail(value){
+
+        $("#exampleModalLabel").html("Edit Staff");
+        $("#password").attr("placeholder", "Password");
+        $("#repeatPassword").attr("placeholder", "Repeat Password");
+
+        var email = value.getAttribute('data-myval');
+
+        $("#email").val(email);
+        $("#action").val("getUserDetail");
+
+        var form_value = $('#register').serialize();
+
+        jQuery.ajax({
+            type : "post",
+            url : "../../controller/userController.php",
+            data : form_value,
+            // dataType : 'json',
+            // async: false,
+            success:function(data){
+
+                console.log(data);
+
+                var json = JSON.parse(data);
+                console.log(json['city']);
+                $("#firstname").val(json['firstname']);
+                $("#lastname").val(json['lastname']);
+                $("#email").val(json['email']);
+                $("#contact").val(json['contact']);
+                $("#street").val(json['street']);
+                $("#postcode").val(json['postcode']);
+                $("#city").val(json['city']);
+                $("#state").val(json['state']).change();
+                $("#country").val(json['country']).change();
+                $("#mode").val("2");
+
+                $("#email").attr('readonly', true);
+
+
+            },
+            error: function(msg) {
+            }
+        });
+    }
+
+    function save(){
+
+        $("#action").val("saveUser");
+
+        var form_value = $('#register').serialize();
+        console.log(form_value);
+
+        jQuery.ajax({
+            type : "post",
+            url : "../../controller/userController.php",
+            data : form_value,
+            // dataType : 'json',
+            // async: false,
+            success:function(data){
+
+                alert("Successfully add new staff.");
+                $("#cancel").click();
+                location.reload();
+                // console.log(data);
+                // cancel
+            },
+            error: function(msg) {
+            }
+        });
+    }
+
+    function close(){
+        $("#firstname").val("");
+        $("#lastname").val("");
+        $("#email").val("");
+        $("#contact").val("");
+        $("#street").val("");
+        $("#postcode").val("");
+        $("#city").val("");
+        $("#state").val("");
+        $("#country").val("");
+        $("#password").val("");
+        $("#repeatPassword").val("");
+    }
 </script>
