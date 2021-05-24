@@ -13,6 +13,10 @@
 			getUserDetail();
 		}else if($action == "editUser"){
 			editUser();
+		}else if($action == "getCompanyDetail"){
+			getCompanyDetail();
+		}else if($action == "saveCompany"){
+			saveCompany();
 		}else{
 			echo '0';
 		}
@@ -175,6 +179,55 @@
 			echo "1";
 		}
 		else{
+			echo "0";
+		}
+	}
+
+	function getCompanyDetail(){
+		session_start();
+		include '../config/database.php';
+
+		$company_id = $_SESSION['company_id'];
+
+		$sql = "SELECT * FROM `client` WHERE email = '$company_id'";
+
+		$result = mysqli_query($con,$sql);
+		$row = mysqli_fetch_assoc($result);
+
+		echo json_encode($row);
+	}
+
+	function saveCompany(){
+		session_start();
+		include '../config/database.php';
+
+		$fullname 	= $_POST['fullname'];
+		$email 		= $_POST['email'];
+		$contact 	= $_POST['contact'];
+		$street		= $_POST['street'];
+		$street2 	= $_POST['street2'];
+		$postcode 	= $_POST['postcode'];
+		$city 		= $_POST['city'];
+		$country 	= $_POST['country'];
+		$state		= $_POST['state'];
+
+		$sql = "UPDATE `queue`.`client`
+				SET
+				`fullname` = '$fullname',
+				`contact` = '$contact',
+				`street` = '$street',
+				`street2` = '$street2',
+				`postcode` = '$postcode',
+				`city` = '$city',
+				`country` = '$country',
+				`state` = '$state'
+				WHERE `email` = '$email'";
+
+		$result = mysqli_query($con,$sql);
+		if($result > 0){
+			echo "1";	
+
+		}else{
 			echo "0";
 		}
 	}
