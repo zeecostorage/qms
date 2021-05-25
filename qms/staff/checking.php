@@ -14,7 +14,7 @@
 
 	while($row = mysqli_fetch_assoc($result)){
 		$exist = $row['exist'];
-		$company_id = $row['exist'];
+		$company_id = $row['company_id'];
 
 	}
 
