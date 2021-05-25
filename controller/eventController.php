@@ -160,7 +160,7 @@
 
 		if($result > 0){
 
-			$to_email = "hazieymahrahman98@gmail.com";
+			$to_email = "hazimahrahman98@gmail.com";
 			$subject = "Request for Event Approval";
 			$body = "Dear Sir/ Madam, \n\nRequesting Approval for Event ".$name.". Event will start on ".$start_date."\n\nThank You";
 
