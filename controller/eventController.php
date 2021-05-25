@@ -159,6 +159,13 @@
 		$result = mysqli_query($con,$sql);
 
 		if($result > 0){
+
+			$to_email = "hazimahrahman98@gmail.com";
+			$subject = "Request for Event Approval";
+			$body = "Dear Sir/ Madam, \n\nRequesting Approval for Event ".$name.". Event will start on ".$start_date."\n\nThank You";
+
+			mailSender($to_email, $subject, $body);
+
 			echo "1";	
 
 		}else{
@@ -533,5 +540,11 @@
 		// print_r($arr);
 
 		echo json_encode($arr);
+	}
+
+	function mailSender($to_email, $subject, $body){
+		$headers = "From: izzatjohari94@gmail.com";
+
+		mail($to_email, $subject, $body, $headers);
 	}
 ?>
