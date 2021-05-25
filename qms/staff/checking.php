@@ -7,19 +7,22 @@
 	$password 	= md5($_POST['password']);
 	$exist = 0;
 	$company_id = "";
+	$firstname = "";
 	
-	$sql = "SELECT count(email) as exist, company_id from staff where email = '$email' and password = '$password'";
+	$sql = "SELECT count(email) as exist, company_id, firstname from staff where email = '$email' and password = '$password'";
 
 	$result = mysqli_query($con,$sql);
 
 	while($row = mysqli_fetch_assoc($result)){
 		$exist = $row['exist'];
 		$company_id = $row['company_id'];
+		$firstname = $row['firstname'];
 
 	}
 
 	if($exist > 0){
 		$_SESSION['staff_id'] = $_POST['email'];
+		$_SESSION['staff_name'] = $firstname;
 		$_SESSION['user_type'] = "1";
 		$_SESSION['company_id'] = $company_id;
 		
