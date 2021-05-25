@@ -83,31 +83,14 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                <div class="form-group">
                                         <input type="text" class="form-control form-control-user" id="contact" name="contact"
                                             placeholder="Contact Number *" required>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <select class="form-control" id="company" name="company" aria-label="Default select example" style="border-radius: 10rem;" required>
-                                          <option selected>Company *</option>
-                                          
-                                            <?php
-                                                
-                                                $client = getClient($con);
-
-                                                foreach($client as $value) {
-                                                    echo '<option value="'.$value['id'].'">'.$value['name'].'</option>';
-                                                }
-
-                                            ?>
-                                        </select>
-                                    </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="password" class="form-control form-control-user"
-                                            id="password" name="password *" placeholder="Password" required>
+                                            id="password" name="password" placeholder="Password *" required>
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user" id="repeatPassword" name="repeatPassword" placeholder="Repeat Password *" required>

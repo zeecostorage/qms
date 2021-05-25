@@ -2,9 +2,6 @@
     include '../../config/enum.php';
     include '../../config/user.php';
 
-    $user = getUser($con);
-    $user['firstname'];
-
     $user_type = getUserType();
 ?>
 
@@ -19,7 +16,7 @@
         <div class="sidebar-brand-text mx-3"><?php echo $app_shortform;?></div>
     </a>
 
-    <?php if($user_type = 1){ ?>
+    <?php if($user_type == 1){ ?>
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
@@ -101,7 +98,7 @@
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
-    <?php }elseif($user_type = 2){ ?>
+    <?php }elseif($user_type == 2){ ?>
 
     <?php }?>
 

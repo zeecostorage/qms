@@ -4,16 +4,31 @@
 	
 	function getUser($con){
 
-		$email = $_SESSION['staff_id'];
-		$role_id = "";
+		if(isset($_SESSION['staff_id'])){
 
-		$sql = "SELECT staff.*,role_id from role_staff join staff on role_staff.staff_id = staff.email where staff_id = '$email'";
+			$email = $_SESSION['staff_id'];
+			$role_id = "";
 
-		$result = mysqli_query($con,$sql);
+			$sql = "SELECT staff.*,role_id from role_staff join staff on role_staff.staff_id = staff.email where staff_id = '$email'";
 
-		$row = mysqli_fetch_assoc($result);
+			$result = mysqli_query($con,$sql);
 
-		return $row;
+			$row = mysqli_fetch_assoc($result);
+
+			return $row;
+		}else{
+
+			$email = $_SESSION['email'];
+			$role_id = "";
+
+			$sql = "SELECT * from customer where email = '$email'";
+
+			$result = mysqli_query($con,$sql);
+
+			$row = mysqli_fetch_assoc($result);
+
+			return $row;
+		}
 	}
 
 	function getUserType(){

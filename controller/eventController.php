@@ -125,21 +125,6 @@
 		return $result;
 	}
 
-	function getEventCustomer($con){
-
-		$company_id = $_SESSION['company_id'];
-
-		$sql = "SELECT 
-					*
-				from 
-					event
-				where company_id = '$company_id' and status = '1'";
-
-		$result = mysqli_query($con,$sql);
-
-		return $result;
-	}
-
 	function getEventDetail(){
 		include '../config/database.php';
 
@@ -626,6 +611,37 @@
 
 		echo json_encode($arr);
 	}
+
+	// customer
+
+	function getWaitingCustomer($con){
+
+		$customer_id = $_SESSION['email'];
+
+		$sql = "SELECT 
+				    event.id AS event_id,
+				    event.name AS event_name,
+				    appointment.id AS appointment_id,
+				    appointment.name AS appointment_name,
+				    client.fullname as client_name,
+				    waitings.wait_date AS waiting_date,
+				    waitings.time AS waiting_time
+				FROM
+				    waitings
+				        JOIN
+				    appointment ON waitings.appointment_id = appointment.id
+				        JOIN
+				    event ON event.id = appointment.event_id
+				        JOIN
+				    client ON event.company_id = client.email
+				WHERE
+				    waitings.customer_id = '$customer_id'";
+
+		$result = mysqli_query($con,$sql);
+
+		return $result;
+	}
+
 
 	function mailSender($to_email, $subject, $body){
 		$headers = "From: izzatjohari94@gmail.com";

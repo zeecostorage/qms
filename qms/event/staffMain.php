@@ -1,6 +1,6 @@
 <?php 
     include '../../config/header.php'; 
-    include '../../controller/eventController.php';  
+    include '../../controller/counterController.php';  
     include '../../config/lkp.php'; 
     include '../../config/enum.php'; 
 
@@ -26,6 +26,9 @@
             display: none;
         }
         div#fieldStatusEdit{
+            display: none;
+        }
+        div#listCustomer{
             display: none;
         }
     </style>
@@ -55,45 +58,8 @@
 
                     <!-- DataTales Example -->
                     <div class="row">
-                        <div class="col-xl-12 col-md-12 mb-4">
-                            <div class="card shadow mb-4">
-                                <div class="card-header">
-                                    <div class="row">
-                                        <div class="col-lg-6">
-                                            <h2 class="m-0 font-weight-bold text-primary">My Booking List</h2>
-                                        </div>
-                                        <!-- <div class="col-lg-6" style="text-align: right">  
-                                            <a href="#" id="formStaffButton" class="btn btn-success bg-gradient-success btn-icon-split" onclick="addForm()" data-toggle="modal" data-target="#formStaff">
-                                                <span class="icon text-white-50">
-                                                    <i class="fas fa-plus"></i>
-                                                </span>
-                                                <span class="text">Add New Event</span>
-                                            </a>
-                                        </div> -->
-                                    </div>
-                                    
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                            <thead>
-                                                <tr>
-                                                    <th>Event Name</th>
-                                                    <th>Date</th>
-                                                    <th>Time</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
 
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        <div class="col-xl-3 col-md-12 mb-4">
-                    </div>
 
-                    <div class="row">
                         <div class="col-xl-12 col-md-12 mb-4">
                             <div class="card shadow mb-4">
                                 <div class="card-header">
@@ -120,6 +86,8 @@
                                                     <th>Name</th>
                                                     <th>Start Date</th>
                                                     <th>End Date</th>
+                                                    <th>Status</th>
+                                                    <th>&nbsp;</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -131,9 +99,20 @@
 
                                                     foreach ($user_list as $value) {
                                                         echo '<tr>';
-                                                        echo '<td>Zakat Fitrah</td>';
-                                                        echo '<td>10-05-2021</td>';
-                                                        echo '<td>1.00PM</td>';
+                                                        echo '<td><a href="#" id="edit" data-toggle="modal" data-target="#formStaff" onclick="editForm(this)" data-myval="'.$value['id'].'">'.$value['name'].'</a></td>';
+                                                        echo '<td>'.date("d-m-Y",strtotime($value['start_date'])).'</td>';
+                                                        echo '<td>'.date("d-m-Y",strtotime($value['end_date'])).'</td>';
+
+                                                        foreach($status as $key) {
+                                                            if($key['id'] == $value['status']){
+                                                                echo '<td>'.$key['name'].'</td>';
+                                                            }
+                                                        }
+                                                        echo '<td>
+                                                                <a href="#" id="appointment" class="btn btn-primary btn-icon-split" onclick="listAppointment(this)" data-myval="'.$value['id'].'" >
+                                                                    <span class="text">Appointment</span>
+                                                                </a>
+                                                            </td>';
                                                         echo '</tr>';
 
                                                     }
@@ -180,6 +159,58 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="tableAppointment">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="col-xl-3 col-md-12 mb-4">
+                    </div>
+                    <div class="row" id="listCustomer">
+                        <div class="col-xl-12 col-md-12 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <h2 class="m-0 font-weight-bold text-primary">List Customer</h2>
+                                        </div>
+                                        <!-- <div class="col-lg-6" style="text-align: right">  
+                                            <a href="#" id="formStaffButton" class="btn btn-success bg-gradient-success btn-icon-split" onclick="addForm()" data-toggle="modal" data-target="#formStaff">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-plus"></i>
+                                                </span>
+                                                <span class="text">Add New Event</span>
+                                            </a>
+                                        </div> -->
+                                    </div>
+                                    
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Customer Name</th>
+                                                    <th>Date</th>
+                                                    <th>Time</th>
+                                                    <th>&nbsp;</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Hamizah</td>
+                                                    <td>10-05-2021</td>
+                                                    <td>9:00 AM</td>
+                                                    <td>
+                                                        <a href="#" id="appointment" class="btn btn-success btn-icon-split" onclick="listAppointment(this)" data-myval="'.$value['id'].'" >
+                                                            <span class="text">Start</span>
+                                                        </a>
+                                                        &nbsp;
+                                                        <a href="#" id="appointment" class="btn btn-warning btn-icon-split" onclick="listAppointment(this)" data-myval="'.$value['id'].'" >
+                                                            <span class="text">End</span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -734,7 +765,7 @@
                 html += '<td>'+json[i]['appointment_name']+'</td>';
                 html += '<td>'+json[i]['appointment_desc']+'</td>';
                 html += '<td>'+json[i]['appointment_status']+'</td>';
-                html += '<td><a href="#" id="edit" data-toggle="modal" data-target="#modalAppointment" class="btn btn-primary btn-icon-split" onclick="editFormappointment(this)" data-myval="'+json[i]['appointment_id']+'" ><span class="text">Book</span></a></td>';
+                html += '<td><a href="#" id="edit"  class="btn btn-primary btn-icon-split" onclick="listCustomer()" data-myval="'+json[i]['appointment_id']+'" ><span class="text">Waiting List</span></a></td>';
                 html += '</tr>';
 
             }
@@ -808,6 +839,10 @@
             error: function(msg) {
             }
         });
+    }
+
+    function listCustomer(){
+        $("#listCustomer").show();
     }
 
     function close(){

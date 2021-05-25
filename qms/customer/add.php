@@ -11,12 +11,12 @@ $city 		= $_POST['city'];
 $state 		= $_POST['state'];
 $country 	= $_POST['country'];
 $contact 	= $_POST['contact'];
-$company 	= $_POST['company'];
 $password 	= md5($_POST['password']);
+// echo $_POST['password'];
 
-$sql = "INSERT INTO customer(firstname, email, contact, password, company_id, lastname, street, street2, postcode, city, country, state)
-		VALUES ('$firstname','$email','$contact','$password','$company','$lastname','$street','$street2','$postcode','$city','$country','$state')";
-
+$sql = "INSERT INTO customer(firstname, email, contact, password, lastname, street, street2, postcode, city, country, state)
+		VALUES ('$firstname','$email','$contact','$password','$lastname','$street','$street2','$postcode','$city','$country','$state')";
+// echo $sql;
 $result = mysqli_query($con,$sql);
 
 if($result > 0){
@@ -25,7 +25,7 @@ if($result > 0){
 }
 else{
 	echo "<script>alert ('Failed to Register');</script>";
-	echo "<script>window.location.href='http://localhost/zeestorage/qms/customer/register.php'; </script>";
+	echo "<script>window.location.href='http://localhost/qms/qms/customer/register.php'; </script>";
 }
 
 mysqli_close($con);

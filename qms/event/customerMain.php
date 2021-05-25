@@ -1,6 +1,6 @@
 <?php 
     include '../../config/header.php'; 
-    include '../../controller/eventController.php';  
+    include '../../controller/waitingController.php';  
     include '../../config/lkp.php'; 
     include '../../config/enum.php'; 
 
@@ -54,6 +54,75 @@
                     <!-- <h1 class="h3 mb-2 text-gray-800">Staff</h1> -->
 
                     <!-- DataTales Example -->
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <h2 class="m-0 font-weight-bold text-primary">My Booking List</h2>
+                                        </div>
+                                        <!-- <div class="col-lg-6" style="text-align: right">  
+                                            <a href="#" id="formStaffButton" class="btn btn-success bg-gradient-success btn-icon-split" onclick="addForm()" data-toggle="modal" data-target="#formStaff">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-plus"></i>
+                                                </span>
+                                                <span class="text">Add New Event</span>
+                                            </a>
+                                        </div> -->
+                                    </div>
+                                    
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Company Name</th>
+                                                    <th>Event Name</th>
+                                                    <th>Date</th>
+                                                    <th>Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+
+                                                    $user_list = getWaitingCustomer($con);
+                                                    $status = status();
+                                                    $html = '<tr><td></td><td></td><td></td><td></td></tr>';
+                                                    $i = 0;
+
+                                                    foreach ($user_list as $value) {
+                                                        if($i == 0){
+                                                            $html =  '<tr>';
+                                                            $html .=  '<td>'.$value['client_name'].'</td>';
+                                                            $html .=  '<td>'.$value['event_name'].'</td>';
+                                                            $html .=  '<td>'.date("d-m-Y",strtotime($value['waiting_date'])).'</td>';
+                                                            $html .=  '<td>'.date('h.i A', strtotime($value['waiting_time'])).'</td>';
+                                                            $html .=  '</tr>';
+                                                        }else{
+                                                            $html .=  '<tr>';
+                                                            $html .=  '<td>'.$value['client_name'].'</td>';
+                                                            $html .=  '<td>'.$value['event_name'].'</td>';
+                                                            $html .=  '<td>'.date("d-m-Y",strtotime($value['waiting_date'])).'</td>';
+                                                            $html .=  '<td>'.date('h.i A', strtotime($value['waiting_time'])).'</td>';
+                                                            $html .=  '</tr>';
+                                                        }
+                                                        $i++;
+
+                                                    }
+
+                                                    echo $html;
+
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="col-xl-3 col-md-12 mb-4">
+                    </div>
+
                     <div class="row">
                         <div class="col-xl-12 col-md-12 mb-4">
                             <div class="card shadow mb-4">
@@ -296,6 +365,9 @@
                                     <input type="hidden" name="mode" id="mode" value="1">
                                     <input type="hidden" name="id" id="id">
                                     <input type="hidden" name="event_id" id="event_id">
+                                    <input type="hidden" name="appointment_id" id="appointment_id">
+                                    <input type="hidden" name="wait_date" id="wait_date">
+                                    <input type="hidden" name="time" id="time">
                                     <div class="form-group">
                                         <label for="name">Name</label>
                                         <input type="text" class="form-control form-control-user" id="name" name="name"
@@ -326,39 +398,17 @@
                                     <div class="form-group">
                                         <label for="schedule">[ Booking ]</label>
                                         <br>
-                                        <button class="btn btn-success" type="button" id="book">10-05-2021</button>&nbsp;
-                                        <button class="btn btn-success" type="button">12-05-2021</button>&nbsp;
-                                        <button class="btn btn-success" type="button">17-05-2021</button>
+                                        <div id="dateBooking">
+                                            
+                                        </div>
                                         <br><br>
                                         <div id="timeBooking">
-                                            <button class="btn btn-success" type="button">1:00 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">1:15 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">1:30 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">1:45 PM</button><br><br>
-                                            <button class="btn btn-success" type="button">2:00 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">2:15 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">2:30 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">2:45 PM</button><br><br>
-                                            <button class="btn btn-success" type="button">3:00 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">3:15 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">3:30 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">3:45 PM</button><br><br>
-                                            <button class="btn btn-success" type="button">4:00 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">4:15 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">4:30 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">4:45 PM</button><br>
                                         </div>
                                     </div>
                                     <br>
                                     <br>
-                                    <div id="buttonSave">
-                                        <input type="submit" id="submit" class="btn btn-primary" value="Save">
-                                        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
-                                    </div>
-                                    <div id="buttonEdit">
-                                        <input type="button" id="edit" class="btn btn-primary" value="Book">
-                                        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
-                                    </div>
+                                    <input type="submit" id="submit" class="btn btn-primary" value="Book">
+                                    <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
                                 </form>
                             </div>
                         </div>
@@ -369,26 +419,6 @@
         </div>
     </div>
 
-    <!-- Logout Modal-->
-    <!-- <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
 </body>
 
 <?php include '../../config/footer.php'; ?>
@@ -397,7 +427,7 @@
     $( document ).ready(function() {
         $("#timeBooking").hide();
         $("#book").css("background-color","#1cc88a");
-            $("#book").css("border-color","#1cc88a");
+        $("#book").css("border-color","#1cc88a");
 
         $("#book").click(function(event){
             event.preventDefault();
@@ -419,191 +449,39 @@
             close();
         });
 
-        $("form#formEvent input#edit").click(function(event){
-            event.preventDefault();
-            $("form#formEvent div#buttonSave").show();
-            $("form#formEvent div#buttonEdit").hide();
-
-            $("form#formEvent input#name").attr('readonly', false);
-            $("form#formEvent textarea#description").attr('readonly', false);
-            $("form#formEvent input#start_date").attr('readonly', false);
-            $("form#formEvent input#end_date").attr('readonly', false);
-            $("form#formEvent select#status").attr('disabled', false);
-        });
-
-
-        $("form#formAppointment input#edit").click(function(event){
-            event.preventDefault();
-            $("form#formAppointment div#buttonSave").show();
-            $("form#formAppointment div#buttonEdit").hide();
-
-            $("form#formAppointment input#name").attr('readonly', false);
-            $("form#formAppointment textarea#description").attr('readonly', false);
-            $("form#formAppointment select#status").attr('disabled', false);
-            $("form#formAppointment select#timeMonday").attr('disabled', false);
-            $("form#formAppointment select#timeTuesday").attr('disabled', false);
-            $("form#formAppointment select#timeWednesday").attr('disabled', false);
-            $("form#formAppointment select#timeThursday").attr('disabled', false);
-            $("form#formAppointment select#timeFriday").attr('disabled', false);
-        });
-
-        $("form#formEvent input#submit").click(function(event){
-            event.preventDefault();
-
-            var name        = $("form#formEvent input#name").val();
-            var description = $("form#formEvent textarea#description").val();
-            var start_date  = $("form#formEvent input#start_date").val();
-            var end_date    = $("form#formEvent input#end_date").val();
-            var status      = $("form#formEvent select#status").val();
-            var mode        = $("form#formEvent input#mode").val();
-
-            var flag = 0;
-
-            if(name == ""){
-                var flag = 1;
-            }
-            if(start_date == ""){
-                var flag = 1;
-            }
-            if(end_date == ""){
-                var flag = 1;
-            }
-            if(status == ""){
-                var flag = 1;
-            }
-            if(flag == 0 && mode != "2"){
-                console.log("save");
-                $("form#formEvent input#action").val("saveEvent");
-
-                var form_value = $('#formEvent').serialize();
-                console.log(form_value);
-
-                jQuery.ajax({
-                    type : "post",
-                    url : "../../controller/eventController.php",
-                    data : form_value,
-                    // dataType : 'json',
-                    // async: false,
-                    success:function(data){
-
-                        alert("Successfully save appointment.");
-                        $("#cancel").click();
-                        location.reload();
-                        // cancel
-                    },
-                    error: function(msg) {
-                    }
-                });
-
-            }else if(flag == 0 && mode == "2"){
-                console.log("edit");
-
-                $("form#formEvent input#action").val("editEvent");
-
-                var form_value = $('#formEvent').serialize();
-                console.log(form_value);
-
-                jQuery.ajax({
-                    type : "post",
-                    url : "../../controller/eventController.php",
-                    data : form_value,
-                    // dataType : 'json',
-                    // async: false,
-                    success:function(data){
-
-                        alert("Successfully edit appointment.");
-                        $("#cancel").click();
-                        location.reload();
-                        // cancel
-                    },
-                    error: function(msg) {
-                    }
-                });
-            }else if(flag == 1){
-                alert("Please insert the mandatory field");
-            }
-        });
-        
         $("form#formAppointment input#submit").click(function(event){
             event.preventDefault();
 
-            var name            = $("form#formAppointment input#name").val();
-            var status          = $("form#formAppointment select#status").val();
-            var mode            = $("form#formAppointment input#mode").val();
+            var mode = $("form#formAppointment #mode").val();
 
-            var flag = 0;
-
-            if(name == ""){
-                var flag = 1;
-            }
-            if(status == ""){
-                var flag = 1;
-            }
-            if(flag == 0 && mode != "2"){
-                console.log("save");
-                $("form#formAppointment input#action").val("saveAppointment");
-
-                var form_value = $('#formAppointment').serialize();
-                console.log(form_value);
-
-                jQuery.ajax({
-                    type : "post",
-                    url : "../../controller/eventController.php",
-                    data : form_value,
-                    // dataType : 'json',
-                    // async: false,
-                    success:function(data){
-
-                        alert("Successfully save appointment.");
-                        $("#cancel").click();
-                        location.reload();
-                        // cancel
-                    },
-                    error: function(msg) {
-                    }
-                });
-
-            }else if(flag == 0 && mode == "2"){
+            if(mode == "2"){
                 console.log("edit");
 
-                $("form#formAppointment input#action").val("editAppointment");
+                $("form#formAppointment input#action").val("saveWaiting");
 
                 var form_value = $('#formAppointment').serialize();
                 console.log(form_value);
 
                 jQuery.ajax({
                     type : "post",
-                    url : "../../controller/eventController.php",
+                    url : "../../controller/waitingController.php",
                     data : form_value,
                     // dataType : 'json',
                     // async: false,
                     success:function(data){
-
-                        alert("Successfully edit appointment.");
-                        $("#cancel").click();
-                        location.reload();
+                        console.log(data);
+                        // alert("Successfully Booked An Appointment.");
+                        // $("#cancel").click();
+                        // location.reload();
                         // cancel
                     },
                     error: function(msg) {
                     }
                 });
-            }else if(flag == 1){
-                alert("Please insert the mandatory field");
             }
         });
         
     });
-
-    function addForm(){
-        $("#formModalTitle").html("Add New Event");
-
-        $("div#buttonSave").show();
-        $("div#buttonEdit").hide();
-
-
-        $("div#fieldStatusSave").show();
-        $("div#fieldStatusEdit").hide();   
-    }
 
     function editForm(value){
         $("form#formEvent #buttonSave").hide();
@@ -624,7 +502,7 @@
 
         jQuery.ajax({
             type : "post",
-            url : "../../controller/eventController.php",
+            url : "../../controller/waitingController.php",
             data : form_value,
             // dataType : 'json',
             // async: false,
@@ -664,13 +542,13 @@
 
         jQuery.ajax({
             type : "post",
-            url : "../../controller/eventController.php",
+            url : "../../controller/waitingController.php",
             data : form_value,
             // dataType : 'json',
             // async: false,
             success:function(data){
 
-                // console.log(data);
+                console.log(data);
 
                 tableAppointment(data);
 
@@ -717,13 +595,6 @@
         $("#tableAppointment").html(html);
     }
 
-    function addFormappointment(){
-        $("#formModalAppointmentTitle").html("Add New Appointment");
-
-        $("div#buttonSave").show();
-        $("div#buttonEdit").hide();
-    }
-
     function editFormappointment(value){
         $("form#formAppointment #buttonSave").hide();
         $("form#formAppointment #buttonEdit").show();
@@ -739,7 +610,7 @@
 
         jQuery.ajax({
             type : "post",
-            url : "../../controller/eventController.php",
+            url : "../../controller/waitingController.php",
             data : form_value,
             // dataType : 'json',
             // async: false,
@@ -747,31 +618,29 @@
 
                 var json = JSON.parse(data);
 
-                console.log(data);
-
                 $("form#formAppointment input#id").val(json[0]['id']);
                 $("form#formAppointment input#name").val(json[0]['name']);
                 $("form#formAppointment textarea#description").val(json[0]['description']);
                 $("form#formAppointment select#status").val(json[0]['status']).change();
+                $("form#formAppointment input#appointment_id").val(id);
 
-                for(var i = 2; i < json.length; i++){
-                    if(json[i]['day'] == "1"){
-                        $("form#formAppointment select#timeMonday").val(json[i]['start_time']).change();
+                var html = "";
+
+                var dateObj1 =  new Date(json[1]['start_date']);
+                var dateObj2 =  new Date(json[1]['end_date']);
+
+                while ( dateObj1.getTime() <= dateObj2.getTime() )
+                {
+                    for(var i = 2; i < json.length; i++){
+                        if(json[i]['day'] == dateObj1.getDay()){
+                            html += "<button id='book' class='btn btn-success mb-2' type='button' onclick='getTime("+json[i]['start_time']+",\""+dateObj1.getDate()+"-"+(parseInt(dateObj1.getMonth())+1)+"-"+dateObj1.getFullYear()+"\")'>"+dateObj1.getDate()+"-"+(parseInt(dateObj1.getMonth())+1)+"-"+dateObj1.getFullYear()+" ("+getDay(json[i]['day'])+")</button>&nbsp;";
+                        }
                     }
-                    if(json[i]['day'] == "2"){
-                        $("form#formAppointment select#timeTuesday").val(json[i]['start_time']).change();
-                    }
-                    if(json[i]['day'] == "3"){
-                        $("form#formAppointment select#timeWednesday").val(json[i]['start_time']).change();
-                    }
-                    if(json[i]['day'] == "4"){
-                        $("form#formAppointment select#timeThursday").val(json[i]['start_time']).change();
-                    }
-                    if(json[i]['day'] == "5"){
-                        $("form#formAppointment select#timeFriday").val(json[i]['start_time']).change();
-                    }
+
+                   dateObj1.setDate(dateObj1.getDate() + 1);
                 }
 
+                $("#dateBooking").html(html);
                 $("form#formAppointment input#mode").val("2");
 
                 $("form#formAppointment input#name").attr('readonly', true);
@@ -782,6 +651,227 @@
             error: function(msg) {
             }
         });
+    }
+
+    function getTime(time,date){
+        console.log(date);
+
+        $("form#formAppointment input#wait_date").val(date);
+
+        html = "";
+        if(time == "1"){
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"08:00:00\")'>8.00 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"08:15:00\")'>8.15 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"08:30:00\")'>8.30 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"08:45:00\")'>8.45 AM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"09:00:00\")'>9.00 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"09:15:00\")'>9.15 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"09:30:00\")'>9.30 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"09:45:00\")'>9.45 AM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"10:00:00\")'>10.00 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"10:15:00\")'>10.15 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"10:30:00\")'>10.30 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"10:45:00\")'>10.45 AM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:00:00\")'>11.00 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:15:00\")'>11.15 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:30:00\")'>11.30 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:45:00\")'>11.45 AM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:00:00\")'>12.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:15:00\")'>12.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:30:00\")'>12.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:45:00\")'>12.45 PM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:00:00\")'>1.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:15:00\")'>1.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:30:00\")'>1.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:45:00\")'>1.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:00:00\")'>2.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:15:00\")'>2.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:30:00\")'>2.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:45:00\")'>2.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:00:00\")'>3.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:15:00\")'>3.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:30:00\")'>3.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:45:00\")'>3.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:00:00\")'>4.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:15:00\")'>4.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:30:00\")'>4.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:45:00\")'>4.45 PM</button>&nbsp;";
+        }
+
+        if(time == "2"){
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"09:00:00\")'>9.00 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"09:15:00\")'>9.15 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"09:30:00\")'>9.30 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"09:45:00\")'>9.45 AM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"10:00:00\")'>10.00 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"10:15:00\")'>10.15 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"10:30:00\")'>10.30 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"10:45:00\")'>10.45 AM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:00:00\")'>11.00 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:15:00\")'>11.15 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:30:00\")'>11.30 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:45:00\")'>11.45 AM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:00:00\")'>12.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:15:00\")'>12.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:30:00\")'>12.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:45:00\")'>12.45 PM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:00:00\")'>1.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:15:00\")'>1.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:30:00\")'>1.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:45:00\")'>1.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:00:00\")'>2.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:15:00\")'>2.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:30:00\")'>2.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:45:00\")'>2.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:00:00\")'>3.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:15:00\")'>3.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:30:00\")'>3.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:45:00\")'>3.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:00:00\")'>4.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:15:00\")'>4.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:30:00\")'>4.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:45:00\")'>4.45 PM</button>&nbsp;";
+        }
+
+        if(time == "3"){
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"10:00:00\")'>10.00 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"10:15:00\")'>10.15 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"10:30:00\")'>10.30 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"10:45:00\")'>10.45 AM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:00:00\")'>11.00 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:15:00\")'>11.15 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:30:00\")'>11.30 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:45:00\")'>11.45 AM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:00:00\")'>12.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:15:00\")'>12.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:30:00\")'>12.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:45:00\")'>12.45 PM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:00:00\")'>1.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:15:00\")'>1.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:30:00\")'>1.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:45:00\")'>1.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:00:00\")'>2.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:15:00\")'>2.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:30:00\")'>2.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:45:00\")'>2.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:00:00\")'>3.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:15:00\")'>3.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:30:00\")'>3.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:45:00\")'>3.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:00:00\")'>4.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:15:00\")'>4.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:30:00\")'>4.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:45:00\")'>4.45 PM</button>&nbsp;";
+        }
+
+        if(time == "4"){
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:00:00\")'>11.00 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:15:00\")'>11.15 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:30:00\")'>11.30 AM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"11:45:00\")'>11.45 AM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:00:00\")'>12.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:15:00\")'>12.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:30:00\")'>12.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:45:00\")'>12.45 PM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:00:00\")'>1.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:15:00\")'>1.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:30:00\")'>1.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:45:00\")'>1.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:00:00\")'>2.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:15:00\")'>2.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:30:00\")'>2.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:45:00\")'>2.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:00:00\")'>3.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:15:00\")'>3.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:30:00\")'>3.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:45:00\")'>3.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:00:00\")'>4.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:15:00\")'>4.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:30:00\")'>4.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:45:00\")'>4.45 PM</button>&nbsp;";
+        }
+
+        if(time == "5"){
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:00:00\")'>12.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:15:00\")'>12.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:30:00\")'>12.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"12:45:00\")'>12.45 PM</button>&nbsp;";
+
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:00:00\")'>1.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:15:00\")'>1.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:30:00\")'>1.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:45:00\")'>1.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:00:00\")'>2.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:15:00\")'>2.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:30:00\")'>2.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:45:00\")'>2.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:00:00\")'>3.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:15:00\")'>3.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:30:00\")'>3.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:45:00\")'>3.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:00:00\")'>4.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:15:00\")'>4.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:30:00\")'>4.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:45:00\")'>4.45 PM</button>&nbsp;";
+        }
+
+        if(time == "6"){
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:00:00\")'>1.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:15:00\")'>1.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:30:00\")'>1.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"13:45:00\")'>1.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:00:00\")'>2.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:15:00\")'>2.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:30:00\")'>2.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"14:45:00\")'>2.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:00:00\")'>3.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:15:00\")'>3.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:30:00\")'>3.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"15:45:00\")'>3.45 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:00:00\")'>4.00 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:15:00\")'>4.15 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:30:00\")'>4.30 PM</button>&nbsp;";
+            html += "<button class='btn btn-success mb-2' type='button' onclick='setTime(\"16:45:00\")'>4.45 PM</button>&nbsp;";
+        }
+
+        $("#timeBooking").html(html);
+        $("#timeBooking").show();
+    }
+
+    function setTime(time){
+        $("form#formAppointment input#time").val(time);
+    }
+
+    function getDay(day){
+        if(day == "1"){
+            return "Monday";
+        }
+        if(day == "2"){
+            return "Tuesday";
+        }
+        if(day == "3"){
+            return "Wednesday";
+        }
+        if(day == "4"){
+            return "Thursday";
+        }
+        if(day == "5"){
+            return "Friday";
+        }
     }
 
     function close(){
