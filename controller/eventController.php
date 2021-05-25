@@ -14,12 +14,16 @@
 			editEvent();
 		}else if($action == "getAppointment"){
 			getAppointment();
+		}else if($action == "getAppointmentCustomer"){
+			getAppointmentCustomer();
 		}else if($action == "saveAppointment"){
 			saveAppointment();
 		}else if($action == "editAppointment"){
 			editAppointment();
 		}else if($action == "getAppointmentDetail"){
 			getAppointmentDetail();
+		}else if($action == "getAppointmentForBooking"){
+			getAppointmentForBooking();
 		}else{
 			echo '0';
 		}
@@ -115,6 +119,21 @@
 				from 
 					event
 				where company_id = '$company_id'";
+
+		$result = mysqli_query($con,$sql);
+
+		return $result;
+	}
+
+	function getEventCustomer($con){
+
+		$company_id = $_SESSION['company_id'];
+
+		$sql = "SELECT 
+					*
+				from 
+					event
+				where company_id = '$company_id' and status = '1'";
 
 		$result = mysqli_query($con,$sql);
 
@@ -222,6 +241,39 @@
 				    `event` b ON a.event_id = b.id
 				WHERE
 				    b.id = '$event_id'";
+
+		$result = mysqli_query($con,$sql);
+
+		// $row = mysqli_free_result($result);
+
+		while($row=mysqli_fetch_array($result)){   
+
+			$arr[] = $row;
+
+		}
+
+		echo json_encode($arr);
+	}
+
+	function getAppointmentCustomer(){
+		include '../config/database.php';
+
+		$event_id = $_POST['event_id'];
+
+		$sql = "SELECT 
+				    b.id AS event_id, 
+				    b.name AS event_name,
+    				b.status AS event_status,
+				    a.id as appointment_id,
+    				a.name as appointment_name,
+				    a.description as appointment_desc,
+				    if(a.status = '1', 'Active', if(a.status = '2', 'Inactive', 'Pending')) as appointment_status
+				FROM
+				    `appointment` a
+				        RIGHT JOIN
+				    `event` b ON a.event_id = b.id
+				WHERE
+				    b.id = '$event_id' and a.status = '1'";
 
 		$result = mysqli_query($con,$sql);
 
@@ -527,6 +579,39 @@
 		$row = mysqli_fetch_assoc($result);
 		$arr[] = $row;
 
+
+		$sql_detail = "SELECT * FROM queue.appointment_detail where appointment_id = '$id'";
+
+		$result = mysqli_query($con,$sql_detail);
+		while($row_detail=mysqli_fetch_array($result)){   
+
+			$arr[] = $row_detail;
+
+		}
+
+		// print_r($arr);
+
+		echo json_encode($arr);
+	}
+
+	function getAppointmentForBooking(){
+		include '../config/database.php';
+
+		$id = $_POST['id'];
+
+		$sql = "SELECT * FROM queue.appointment where id = '$id'";
+
+		$result = mysqli_query($con,$sql);
+		$row = mysqli_fetch_assoc($result);
+		$arr[] = $row;
+
+		$event_id = $row['event_id'];
+
+		$sql = "SELECT * FROM queue.event where id = '$event_id'";
+
+		$result = mysqli_query($con,$sql);
+		$row = mysqli_fetch_assoc($result);
+		$arr[] = $row;
 
 		$sql_detail = "SELECT * FROM queue.appointment_detail where appointment_id = '$id'";
 

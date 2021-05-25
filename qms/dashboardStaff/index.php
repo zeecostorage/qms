@@ -3,44 +3,8 @@
 ?>
 
     <style>
-        .fc-head-container{
-            background-color: #6666ff;
-            color: white;
-        }
-        .fc-day-header{
-            font-size: 10px !important;
-            font-weight: bold !important;
-        }
-        h2{
-            font-size: 17px !important;
-        }
-        .fc-content{
-            height: 6px !important;
-        }
-        .fc-title{
-            font-size: 10px !important;
-        }
-        button.fc-prev-button{
-            visibility: hidden;
-        }
-        button.fc-next-button{
-            visibility: hidden;
-        }
-        button.fc-today-button{
-            visibility: hidden;
-        }
-        button.fc-month-button{
-            visibility: hidden;
-        }
-        button.fc-agendaWeek-button{
-            visibility: hidden;
-        }
-        button.fc-agendaDay-button{
-            visibility: hidden;
-        }
+        
     </style>
-
-    <div id="calendar"></div>
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -79,7 +43,7 @@
                                     <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
                                 </div>
                                 <div class="card-body">
-                                    <!-- <div id="calendar"></div> -->
+                                    <div id="calendar"></div>
                                 </div>
                             </div>
 
@@ -119,19 +83,63 @@
 <?php include '../../config/footer.php'; ?>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.print.min.css" rel="stylesheet" />
+<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.print.min.css" rel="stylesheet" /> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
 
 <script>
 $(document).ready(function() {
-    
+
     $("#calendar").fullCalendar({
-        height: 388
+        header: {
+            left: 'prev,next today myCustomButton',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+          }
     });
 
-    $("#calendar").fullCalendar( 'gotoDate', paramYear+'-01-15' );
+    $("#calendar").fullCalendar( 'gotoDate', '2019-09-01' );
 
+    var paramMonthJan = 'January';
+
+    $('#calendar').fullCalendar('addEventSource',  
+        function(start, end, timezone, callback) {
+            var record_id = "2019";
+            var url = "http://dev-ej-app.ppj.gov.my/jw/web/json/plugin/org.joget.cuti.cutiWebservice/service";
+             console.log(record_id);
+             console.log(url);
+            $.ajax({
+                url:url,
+                type:'get',
+                data:{action:"getDataHoliday", req_id:record_id},
+                dataType: 'json',
+                beforeSend: function () {
+                    // block("calender");
+                },
+                success: function(data){
+                    // var obj = JSON.parse(JSON.stringify(dataAjax));
+
+                    console.log(data);
+                    var data_event = [];
+                    for(var i = 0; i < data.events.length; i++){
+                        data_event.push({
+                            title: data.events[i].title,
+                            start: data.events[i].start,
+                            allDay: true,
+                            color: 'green'
+                        });
+                    }
+                    console.log(data_event);
+                    callback(data_event);
+                    // unblock("calender");
+                },
+                error: function (request, status, error) {
+                    console.log(error);
+                }
+            })
+        }
+    );
+    
 });
 
 </script>

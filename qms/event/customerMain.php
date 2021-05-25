@@ -62,14 +62,14 @@
                                         <div class="col-lg-6">
                                             <h2 class="m-0 font-weight-bold text-primary">Event</h2>
                                         </div>
-                                        <div class="col-lg-6" style="text-align: right">  
+                                        <!-- <div class="col-lg-6" style="text-align: right">  
                                             <a href="#" id="formStaffButton" class="btn btn-success bg-gradient-success btn-icon-split" onclick="addForm()" data-toggle="modal" data-target="#formStaff">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-plus"></i>
                                                 </span>
                                                 <span class="text">Add New Event</span>
                                             </a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     
                                 </div>
@@ -88,7 +88,7 @@
                                             <tbody>
                                                 <?php
 
-                                                    $user_list = getEvent($con);
+                                                    $user_list = getEventCustomer($con);
                                                     $status = status();
 
 
@@ -119,7 +119,7 @@
                                     </div>
                                 </div>
                             </div>
-                        <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="col-xl-3 col-md-12 mb-4">
                     </div>
 
                     <div class="row" id="divAppointment">
@@ -131,14 +131,14 @@
                                             <h2 class="m-0 font-weight-bold text-primary">Appointment</h2>
                                             <h5 class="m-0 font-weight-bold text-primary">Event - <span id="eventTitle"></span></h5>
                                         </div>
-                                        <div id="addButtonAppointment" class="col-lg-4" style="text-align: right">  
+                                        <!-- <div id="addButtonAppointment" class="col-lg-4" style="text-align: right">  
                                             <a href="#" id="addButtonAppointment" class="btn btn-success bg-gradient-success btn-icon-split" onclick="addFormappointment()" data-toggle="modal" data-target="#modalAppointment">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-plus"></i>
                                                 </span>
                                                 <span class="text">Add New Appointment</span>
                                             </a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     
                                 </div>
@@ -150,6 +150,7 @@
                                                     <th>Name</th>
                                                     <th>Description</th>
                                                     <th>Status</th>
+                                                    <th>&nbsp;</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="tableAppointment">
@@ -262,7 +263,7 @@
                                         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
                                     </div>
                                     <div id="buttonEdit">
-                                        <input type="button" id="edit" class="btn btn-primary" value="Edit">
+                                        <!-- <input type="button" id="edit" class="btn btn-primary" value="Edit"> -->
                                         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
                                     </div>
                                 </form>
@@ -323,85 +324,39 @@
                                     </div>
                                     <hr>
                                     <div class="form-group">
-                                        <label for="schedule">[ Schedule ]</label>
+                                        <label for="schedule">[ Booking ]</label>
                                         <br>
-                                        <label for="time">Monday</label>
-                                        <select class="form-control  form-control-user" id="timeMonday" name="timeMonday" aria-label="Default select example" required>
-                                            <option value="" selected>Time</option>
-                                            <?php
-                                                
-                                                $schedule = schedule();
-
-                                                foreach($schedule as $value) {
-                                                    echo '<option value="'.$value['id'].'">'.$value['name'].'</option>';
-                                                }
-
-                                            ?>
-                                        </select>
-                                        <br>
-                                        <label for="time">Tuesday</label>
-                                        <select class="form-control  form-control-user" id="timeTuesday" name="timeTuesday" aria-label="Default select example" required>
-                                            <option value="" selected>Time</option>
-                                            <?php
-                                                
-                                                $schedule = schedule();
-
-                                                foreach($schedule as $value) {
-                                                    echo '<option value="'.$value['id'].'">'.$value['name'].'</option>';
-                                                }
-
-                                            ?>
-                                        </select>
-                                        <br>
-                                        <label for="time">Wednesday</label>
-                                        <select class="form-control  form-control-user" id="timeWednesday" name="timeWednesday" aria-label="Default select example" required>
-                                            <option value="" selected>Time</option>
-                                            <?php
-                                                
-                                                $schedule = schedule();
-
-                                                foreach($schedule as $value) {
-                                                    echo '<option value="'.$value['id'].'">'.$value['name'].'</option>';
-                                                }
-
-                                            ?>
-                                        </select>
-                                        <br>
-                                        <label for="time">Thursday</label>
-                                        <select class="form-control  form-control-user" id="timeThursday" name="timeThursday" aria-label="Default select example" required>
-                                            <option value="" selected>Time</option>
-                                            <?php
-                                                
-                                                $schedule = schedule();
-
-                                                foreach($schedule as $value) {
-                                                    echo '<option value="'.$value['id'].'">'.$value['name'].'</option>';
-                                                }
-
-                                            ?>
-                                        </select>
-                                        <br>
-                                        <label for="time">Friday</label>
-                                        <select class="form-control  form-control-user" id="timeFriday" name="timeFriday" aria-label="Default select example" required>
-                                            <option value="" selected>Time</option>
-                                            <?php
-                                                
-                                                $schedule = schedule();
-
-                                                foreach($schedule as $value) {
-                                                    echo '<option value="'.$value['id'].'">'.$value['name'].'</option>';
-                                                }
-
-                                            ?>
-                                        </select>
+                                        <button class="btn btn-success" type="button" id="book">10-05-2021</button>&nbsp;
+                                        <button class="btn btn-success" type="button">12-05-2021</button>&nbsp;
+                                        <button class="btn btn-success" type="button">17-05-2021</button>
+                                        <br><br>
+                                        <div id="timeBooking">
+                                            <button class="btn btn-success" type="button">1:00 PM</button>&nbsp;
+                                            <button class="btn btn-success" type="button">1:15 PM</button>&nbsp;
+                                            <button class="btn btn-success" type="button">1:30 PM</button>&nbsp;
+                                            <button class="btn btn-success" type="button">1:45 PM</button><br><br>
+                                            <button class="btn btn-success" type="button">2:00 PM</button>&nbsp;
+                                            <button class="btn btn-success" type="button">2:15 PM</button>&nbsp;
+                                            <button class="btn btn-success" type="button">2:30 PM</button>&nbsp;
+                                            <button class="btn btn-success" type="button">2:45 PM</button><br><br>
+                                            <button class="btn btn-success" type="button">3:00 PM</button>&nbsp;
+                                            <button class="btn btn-success" type="button">3:15 PM</button>&nbsp;
+                                            <button class="btn btn-success" type="button">3:30 PM</button>&nbsp;
+                                            <button class="btn btn-success" type="button">3:45 PM</button><br><br>
+                                            <button class="btn btn-success" type="button">4:00 PM</button>&nbsp;
+                                            <button class="btn btn-success" type="button">4:15 PM</button>&nbsp;
+                                            <button class="btn btn-success" type="button">4:30 PM</button>&nbsp;
+                                            <button class="btn btn-success" type="button">4:45 PM</button><br>
+                                        </div>
                                     </div>
+                                    <br>
                                     <br>
                                     <div id="buttonSave">
                                         <input type="submit" id="submit" class="btn btn-primary" value="Save">
                                         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
                                     </div>
                                     <div id="buttonEdit">
-                                        <input type="button" id="edit" class="btn btn-primary" value="Edit">
+                                        <input type="button" id="edit" class="btn btn-primary" value="Book">
                                         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
                                     </div>
                                 </form>
@@ -440,6 +395,18 @@
 
 <script type="text/javascript">
     $( document ).ready(function() {
+        $("#timeBooking").hide();
+        $("#book").css("background-color","#1cc88a");
+            $("#book").css("border-color","#1cc88a");
+
+        $("#book").click(function(event){
+            event.preventDefault();
+
+            $("#book").css("background-color","#2e59d9");
+            $("#book").css("border-color","#2e59d9");
+            $("#timeBooking").show();
+        });
+
         $("#formEvent button#cancel").click(function(event){
             event.preventDefault();
 
@@ -690,7 +657,7 @@
 
         var event_id = value.getAttribute('data-myval');
 
-        $("form#formAppointment input#action").val("getAppointment");
+        $("form#formAppointment input#action").val("getAppointmentCustomer");
         $("form#formAppointment input#event_id").val(event_id);
 
         var form_value = $('#formAppointment').serialize();
@@ -738,9 +705,10 @@
             }else{
                 
                 html += '<tr>';
-                html += '<td><a href="#" id="edit" data-toggle="modal" data-target="#modalAppointment" onclick="editFormappointment(this)" data-myval="'+json[i]['appointment_id']+'">'+json[i]['appointment_name']+'</a></td>';
+                html += '<td>'+json[i]['appointment_name']+'</td>';
                 html += '<td>'+json[i]['appointment_desc']+'</td>';
                 html += '<td>'+json[i]['appointment_status']+'</td>';
+                html += '<td><a href="#" id="edit" data-toggle="modal" data-target="#modalAppointment" class="btn btn-primary btn-icon-split" onclick="editFormappointment(this)" data-myval="'+json[i]['appointment_id']+'" ><span class="text">Book</span></a></td>';
                 html += '</tr>';
 
             }
@@ -760,11 +728,11 @@
         $("form#formAppointment #buttonSave").hide();
         $("form#formAppointment #buttonEdit").show();
 
-        $("#formModalAppointmentTitle").html("Edit Appointment");
+        $("#formModalAppointmentTitle").html("Book an Appointment");
 
         var id = value.getAttribute('data-myval');
 
-        $("form#formAppointment input#action").val("getAppointmentDetail");
+        $("form#formAppointment input#action").val("getAppointmentForBooking");
         $("form#formAppointment input#id").val(id);
 
         var form_value = $('#formAppointment').serialize();
@@ -779,17 +747,14 @@
 
                 var json = JSON.parse(data);
 
+                console.log(data);
+
                 $("form#formAppointment input#id").val(json[0]['id']);
                 $("form#formAppointment input#name").val(json[0]['name']);
                 $("form#formAppointment textarea#description").val(json[0]['description']);
                 $("form#formAppointment select#status").val(json[0]['status']).change();
-                $("form#formAppointment select#timeMonday").val("").change();
-                $("form#formAppointment select#timeTuesday").val("").change();
-                $("form#formAppointment select#timeWednesday").val("").change();
-                $("form#formAppointment select#timeThursday").val("").change();
-                $("form#formAppointment select#timeFriday").val("").change();
 
-                for(var i = 1; i < json.length; i++){
+                for(var i = 2; i < json.length; i++){
                     if(json[i]['day'] == "1"){
                         $("form#formAppointment select#timeMonday").val(json[i]['start_time']).change();
                     }
@@ -812,11 +777,6 @@
                 $("form#formAppointment input#name").attr('readonly', true);
                 $("form#formAppointment textarea#description").attr('readonly', true);
                 $("form#formAppointment select#status").attr('disabled', 'disabled');
-                $("form#formAppointment select#timeMonday").attr('disabled', 'disabled');
-                $("form#formAppointment select#timeTuesday").attr('disabled', 'disabled');
-                $("form#formAppointment select#timeWednesday").attr('disabled', 'disabled');
-                $("form#formAppointment select#timeThursday").attr('disabled', 'disabled');
-                $("form#formAppointment select#timeFriday").attr('disabled', 'disabled');
 
             },
             error: function(msg) {
