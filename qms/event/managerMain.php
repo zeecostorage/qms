@@ -62,14 +62,14 @@
                                         <div class="col-lg-6">
                                             <h2 class="m-0 font-weight-bold text-primary">Event</h2>
                                         </div>
-                                        <div class="col-lg-6" style="text-align: right">  
+                                        <!-- <div class="col-lg-6" style="text-align: right">  
                                             <a href="#" id="formStaffButton" class="btn btn-success bg-gradient-success btn-icon-split" onclick="addForm()" data-toggle="modal" data-target="#formStaff">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-plus"></i>
                                                 </span>
                                                 <span class="text">Add New Event</span>
                                             </a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     
                                 </div>
@@ -119,11 +119,11 @@
                                     </div>
                                 </div>
                             </div>
-                        <div class="col-xl-12 col-md-12 mb-4">
+                        <div class="col-xl-3 col-md-12 mb-4">
                     </div>
 
                     <div class="row" id="divAppointment">
-                        <div class="col-xl-3 col-md-12 mb-4">
+                        <div class="col-xl-12 col-md-12 mb-4">
                             <div class="card shadow mb-4">
                                 <div class="card-header">
                                     <div class="row">
@@ -131,14 +131,14 @@
                                             <h2 class="m-0 font-weight-bold text-primary">Appointment</h2>
                                             <h5 class="m-0 font-weight-bold text-primary">Event - <span id="eventTitle"></span></h5>
                                         </div>
-                                        <div id="addButtonAppointment" class="col-lg-4" style="text-align: right">  
+                                        <!-- <div id="addButtonAppointment" class="col-lg-4" style="text-align: right">  
                                             <a href="#" id="addButtonAppointment" class="btn btn-success bg-gradient-success btn-icon-split" onclick="addFormappointment()" data-toggle="modal" data-target="#modalAppointment">
                                                 <span class="icon text-white-50">
                                                     <i class="fas fa-plus"></i>
                                                 </span>
                                                 <span class="text">Add New Appointment</span>
                                             </a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     
                                 </div>
@@ -262,7 +262,7 @@
                                         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
                                     </div>
                                     <div id="buttonEdit">
-                                        <input type="button" id="edit" class="btn btn-primary" value="Edit">
+                                        <!-- <input type="button" id="edit" class="btn btn-primary" value="Edit"> -->
                                         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
                                     </div>
                                 </form>
@@ -401,7 +401,7 @@
                                         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
                                     </div>
                                     <div id="buttonEdit">
-                                        <input type="button" id="edit" class="btn btn-primary" value="Edit">
+                                        <!-- <input type="button" id="edit" class="btn btn-primary" value="Edit"> -->
                                         <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
                                     </div>
                                 </form>
