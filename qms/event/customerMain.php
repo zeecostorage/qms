@@ -469,10 +469,10 @@
                     // dataType : 'json',
                     // async: false,
                     success:function(data){
-                        console.log(data);
-                        // alert("Successfully Booked An Appointment.");
-                        // $("#cancel").click();
-                        // location.reload();
+                        // console.log(data);
+                        alert("Successfully Booked An Appointment.");
+                        $("#cancel").click();
+                        location.reload();
                         // cancel
                     },
                     error: function(msg) {
