@@ -243,7 +243,7 @@
 
                                     <div id="fieldStatusEdit" class="form-group">
                                         <label for="status">Status</label>
-                                        <select class="form-control  form-control-user" id="status" name="status" aria-label="Default select example" required>
+                                        <select class="form-control  form-control-user" id="status" name="statusEdit" aria-label="Default select example" required>
 
                                             <?php
                                                 
@@ -333,7 +333,7 @@
             var description = $("form#formEvent textarea#description").val();
             var start_date  = $("form#formEvent input#start_date").val();
             var end_date    = $("form#formEvent input#end_date").val();
-            var status      = $("form#formEvent select#status").val();
+            var status      = $("form#formEvent select#statusEdit").val();
             var mode        = $("form#formEvent input#mode").val();
 
             var flag = 0;
