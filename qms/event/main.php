@@ -487,7 +487,7 @@
             var description = $("form#formEvent textarea#description").val();
             var start_date  = $("form#formEvent input#start_date").val();
             var end_date    = $("form#formEvent input#end_date").val();
-            var status      = $("form#formEvent select#status").val();
+            var status      = $("div#fieldStatusSave select#status").val();
             var mode        = $("form#formEvent input#mode").val();
 
             var flag = 0;
@@ -561,7 +561,7 @@
             event.preventDefault();
 
             var name            = $("form#formAppointment input#name").val();
-            var status          = $("form#formAppointment select#status").val();
+            var status          = $("div#fieldStatusSave select#status").val();
             var mode            = $("form#formAppointment input#mode").val();
 
             var flag = 0;
