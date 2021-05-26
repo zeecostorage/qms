@@ -31,6 +31,9 @@
         div#listCustomer{
             display: none;
         }
+        div#listAllEvent{
+            display: none;
+        }
     </style>
 
     <!-- Page Wrapper -->
@@ -57,7 +60,51 @@
                     <!-- <h1 class="h3 mb-2 text-gray-800">Staff</h1> -->
 
                     <!-- DataTales Example -->
-                    <div class="row">
+					<div class="row">
+                        <div class="col-xl-12 col-md-12 mb-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <h2 class="m-0 font-weight-bold text-primary">Staff Detail</h2>
+                                        </div>
+                                        <!-- <div class="col-lg-6" style="text-align: right">  
+                                            <a href="#" id="formStaffButton" class="btn btn-success bg-gradient-success btn-icon-split" onclick="addForm()" data-toggle="modal" data-target="#formStaff">
+                                                <span class="icon text-white-50">
+                                                    <i class="fas fa-plus"></i>
+                                                </span>
+                                                <span class="text">Add New Event</span>
+                                            </a>
+                                        </div> -->
+                                    </div>
+                                    
+                                </div>
+                                <div class="card-body">
+                                    <form id="formEvent" method="POST">
+	                                    <input type="hidden" name="action" id="action">
+	                                    <input type="hidden" name="mode" id="mode" value="1">
+	                                    <input type="hidden" name="id" id="id">
+	                                    <div class="form-group">
+	                                        <label for="name">Name</label>
+	                                        <input type="text" class="form-control form-control-user" id="name" name="name" value="<?php echo getStaffDetail($con);?>" 
+	                                            placeholder="Name *" readonly>
+	                                    </div>
+	                                    <div class="form-group">
+	                                        <label for="description">Counter Number</label>
+	                                        <input type="text" class="form-control form-control-user" id="counter_no" name="counter_no"
+	                                            placeholder="Counter Number *" required>
+	                                    </div>
+	                                    <br>
+	                                    <div id="buttonLogin">
+	                                        <button class="btn btn-primary" type="button" id="buttonLogin">Login</button>
+	                                    </div>
+	                                </form>
+                                </div>
+                            </div>
+                        <div class="col-xl-3 col-md-12 mb-4">
+                    </div>
+
+                    <div class="row" id="listAllEvent">
 
 
                         <div class="col-xl-12 col-md-12 mb-4">
@@ -196,21 +243,7 @@
                                                     <th>&nbsp;</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Hamizah</td>
-                                                    <td>10-05-2021</td>
-                                                    <td>9:00 AM</td>
-                                                    <td>
-                                                        <a href="#" id="appointment" class="btn btn-success btn-icon-split" onclick="listAppointment(this)" data-myval="'.$value['id'].'" >
-                                                            <span class="text">Start</span>
-                                                        </a>
-                                                        &nbsp;
-                                                        <a href="#" id="appointment" class="btn btn-warning btn-icon-split" onclick="listAppointment(this)" data-myval="'.$value['id'].'" >
-                                                            <span class="text">End</span>
-                                                        </a>
-                                                    </td>
-                                                </tr>
+                                            <tbody id="customerList">
                                             </tbody>
                                         </table>
                                     </div>
@@ -452,6 +485,22 @@
 
 <script type="text/javascript">
     $( document ).ready(function() {
+    	$("#buttonLogin").click(function(event){
+            event.preventDefault();
+
+            var counter_no = $("input#counter_no").val();
+            if(counter_no == ""){
+            	alert("Please Enter Counter Number");
+            }else{
+
+	            $("#listAllEvent").show();
+	            counter_no
+
+	            $("input#counter_no").attr('readonly', true);
+            }
+    	});
+
+    	
         $("#timeBooking").hide();
         $("#book").css("background-color","#1cc88a");
             $("#book").css("border-color","#1cc88a");
@@ -765,7 +814,7 @@
                 html += '<td>'+json[i]['appointment_name']+'</td>';
                 html += '<td>'+json[i]['appointment_desc']+'</td>';
                 html += '<td>'+json[i]['appointment_status']+'</td>';
-                html += '<td><a href="#" id="edit"  class="btn btn-primary btn-icon-split" onclick="listCustomer()" data-myval="'+json[i]['appointment_id']+'" ><span class="text">Waiting List</span></a></td>';
+                html += '<td><a href="#" id="edit"  class="btn btn-primary btn-icon-split" onclick="listCustomer(this)" data-myval="'+json[i]['appointment_id']+'" ><span class="text">Waiting List</span></a></td>';
                 html += '</tr>';
 
             }
@@ -841,8 +890,59 @@
         });
     }
 
-    function listCustomer(){
+    function listCustomer(value){
         $("#listCustomer").show();
+
+        var id = value.getAttribute('data-myval');
+
+        $("form#formAppointment input#action").val("getListCustomer");
+        $("form#formAppointment input#id").val(id);
+
+        var form_value = $('#formAppointment').serialize();
+
+        jQuery.ajax({
+            type : "post",
+            url : "../../controller/counterController.php",
+            data : form_value,
+            // dataType : 'json',
+            // async: false,
+            success:function(data){
+
+                var json = JSON.parse(data);
+                console.log(data);
+
+                
+
+                var html = "";
+
+                for(var i = 0; i < json.length; i++){
+                	html += "<tr>";
+                	html += "<td>"+json[i]["waiting_name"];
+                	html += "</td>";
+                	html += "<td>"+json[i]["waiting_date"];
+                	html += "</td>";
+                	html += "<td>"+json[i]["waiting_time"];
+                	html += "</td>";
+                	html += "<td>";
+
+                                html += '<a href="#" id="appointment" class="btn btn-success btn-icon-split" onclick="listAppointment(this)" data-myval="" >';
+                                    html += '<span class="text">Start</span>';
+                                html += '</a>';
+                                html += '&nbsp;';
+                                html += '<a href="#" id="appointment" class="btn btn-warning btn-icon-split" onclick="listAppointment(this)" data-myval="" >';
+                                    html += '<span class="text">End</span>';
+                                html += '</a>';
+
+                	html += "</td>";
+                	html += "</tr>";
+                }
+
+               	$("#customerList").html(html);
+
+            },
+            error: function(msg) {
+            }
+        });
     }
 
     function close(){

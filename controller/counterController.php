@@ -25,7 +25,10 @@
 			getAppointmentDetail();
 		}else if($action == "getAppointmentForBooking"){
 			getAppointmentForBooking();
-		}else{
+		}else if($action == "getListCustomer"){
+			getListCustomer();
+		}
+		else{
 			echo '0';
 		}
 	}
@@ -151,6 +154,13 @@
 		return $result;
 	}
 
+	function getStaffDetail($con){
+
+		$customer_id = $_SESSION['staff_name'];
+
+		echo $customer_id;
+	}
+
 	function getEventDetail(){
 		include '../config/database.php';
 
@@ -257,6 +267,42 @@
 		}
 
 		// print_r($arr);
+
+		echo json_encode($arr);
+	}
+
+	function getListCustomer(){
+		include '../config/database.php';
+
+		$appointment_id = $_POST['id'];
+
+		$sql = "SELECT 
+				    event.id AS event_id,
+				    event.name AS event_name,
+				    appointment.id AS appointment_id,
+				    appointment.name AS appointment_name,
+				    client.fullname as client_name,
+				    waitings.queuename AS waiting_name,
+				    waitings.wait_date AS waiting_date,
+				    waitings.time AS waiting_time
+				FROM
+				    waitings
+				        JOIN
+				    appointment ON waitings.appointment_id = appointment.id
+				        JOIN
+				    event ON event.id = appointment.event_id
+				        JOIN
+				    client ON event.company_id = client.email
+				WHERE
+				    appointment.id = '$appointment_id' and str_to_date(wait_date,'%d-%m-%Y') = curdate()";
+
+		$result = mysqli_query($con,$sql);
+
+		while($row=mysqli_fetch_array($result)){   
+
+			$arr[] = $row;
+
+		}
 
 		echo json_encode($arr);
 	}

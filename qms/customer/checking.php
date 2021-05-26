@@ -22,7 +22,7 @@
 		$_SESSION['staff_name'] = $firstname;
 		$_SESSION['user_type'] = "4";
 		
-		echo "<script>window.location.href='../dashboard/index.php'; </script>";
+		echo "<script>window.location.href='../event/customerMain.php'; </script>";
 	}
 	else{
 		echo "<script>alert ('Failed to Login');</script>";

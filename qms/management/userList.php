@@ -41,7 +41,7 @@
 
                     <!-- DataTales Example -->
                     <div class="row">
-                        <div class="col-xl-3 col-md-12 mb-4">
+                        <div class="col-xl-12 col-md-12 mb-4">
                             <div class="card shadow mb-4">
                                 <div class="card-header">
                                     <div class="row">
@@ -144,7 +144,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xl-3 col-md-12 mb-4">
+                        <div class="col-xl-12 col-md-12 mb-4">
                             <div class="card shadow mb-4">
                                 <div class="card-header">
                                     <div class="row">
