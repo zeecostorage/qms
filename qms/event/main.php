@@ -231,7 +231,7 @@
                                     </div>
                                     <div id="fieldStatusSave" class="form-group">
                                         <label for="status">Status</label>
-                                        <select class="form-control  form-control-user" id="status" name="status" aria-label="Default select example" required>
+                                        <select class="form-control  form-control-user" id="statusSave" name="statusSave" aria-label="Default select example" required>
 
                                             <?php
                                                 
@@ -244,7 +244,7 @@
 
                                     <div id="fieldStatusEdit" class="form-group">
                                         <label for="status">Status</label>
-                                        <select class="form-control  form-control-user" id="status" name="status" aria-label="Default select example" required>
+                                        <select class="form-control  form-control-user" id="statusEdit" name="statusEdit" aria-label="Default select example" required>
 
                                             <?php
                                                 
@@ -461,7 +461,7 @@
             $("form#formEvent textarea#description").attr('readonly', false);
             $("form#formEvent input#start_date").attr('readonly', false);
             $("form#formEvent input#end_date").attr('readonly', false);
-            $("form#formEvent select#status").attr('disabled', false);
+            $("form#formEvent select#statusEdit").attr('disabled', false);
         });
 
 
@@ -487,7 +487,7 @@
             var description = $("form#formEvent textarea#description").val();
             var start_date  = $("form#formEvent input#start_date").val();
             var end_date    = $("form#formEvent input#end_date").val();
-            var status      = $("div#fieldStatusSave select#status").val();
+            // var status      = $("div#fieldStatusSave select#status").val();
             var mode        = $("form#formEvent input#mode").val();
 
             var flag = 0;
@@ -499,9 +499,6 @@
                 var flag = 1;
             }
             if(end_date == ""){
-                var flag = 1;
-            }
-            if(status == ""){
                 var flag = 1;
             }
             if(flag == 0 && mode != "2"){
@@ -518,7 +515,7 @@
                     // dataType : 'json',
                     // async: false,
                     success:function(data){
-
+                        // console.log(data);
                         alert("Successfully save appointment.");
                         $("#cancel").click();
                         location.reload();
@@ -669,14 +666,14 @@
                 $("form#formEvent textarea#description").val(json['description']);
                 $("form#formEvent input#start_date").val(json['start_date']);
                 $("form#formEvent input#end_date").val(json['start_date']);
-                $("form#formEvent select#status").val(json['status']).change();
+                $("form#formEvent select#statusEdit").val(json['status']).change();
                 $("form#formEvent input#mode").val("2");
 
                 $("form#formEvent input#name").attr('readonly', true);
                 $("form#formEvent textarea#description").attr('readonly', true);
                 $("form#formEvent input#start_date").attr('readonly', true);
                 $("form#formEvent input#end_date").attr('readonly', true);
-                $("form#formEvent select#status").attr('disabled', 'disabled');
+                $("form#formEvent select#statusEdit").attr('disabled', 'disabled');
 
 
             },

@@ -149,7 +149,7 @@
 		$description 	= $_POST['description'];
 		$start_date 	= $_POST['start_date'];
 		$end_date		= $_POST['end_date'];
-		$status 		= $_POST['status'];
+		$status 		= $_POST['statusSave'];
 
 		$sql = "INSERT INTO `queue`.`event`
 				(`name`,
@@ -186,7 +186,7 @@
 		$description 	= $_POST['description'];
 		$start_date 	= $_POST['start_date'];
 		$end_date		= $_POST['end_date'];
-		$status 		= $_POST['status'];
+		$status 		= $_POST['statusEdit'];
 
 		$sql = "UPDATE `queue`.`event`
 				SET
