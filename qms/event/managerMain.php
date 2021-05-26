@@ -229,22 +229,9 @@
                                                 placeholder="End Number *" required>
                                         </div>
                                     </div>
-                                    <div id="fieldStatusSave" class="form-group">
-                                        <label for="status">Status</label>
-                                        <select class="form-control  form-control-user" id="status" name="status" aria-label="Default select example" required>
-
-                                            <?php
-                                                
-                                                $status = status();
-                                                echo '<option value="'.$status[2]['id'].'">'.$status[2]['name'].'</option>';   
-
-                                            ?>
-                                        </select>
-                                    </div>
-
                                     <div id="fieldStatusEdit" class="form-group">
                                         <label for="status">Status</label>
-                                        <select class="form-control  form-control-user" id="status" name="status" aria-label="Default select example" required>
+                                        <select class="form-control  form-control-user" id="statusEdit" name="statusEdit" aria-label="Default select example" required>
 
                                             <?php
                                                 
@@ -487,7 +474,7 @@
             var description = $("form#formEvent textarea#description").val();
             var start_date  = $("form#formEvent input#start_date").val();
             var end_date    = $("form#formEvent input#end_date").val();
-            var status      = $("form#formEvent select#status").val();
+            var status      = $("form#formEvent select#statusEdit").val();
             var mode        = $("form#formEvent input#mode").val();
 
             var flag = 0;
@@ -676,7 +663,7 @@
                 $("form#formEvent textarea#description").attr('readonly', true);
                 $("form#formEvent input#start_date").attr('readonly', true);
                 $("form#formEvent input#end_date").attr('readonly', true);
-                $("form#formEvent select#status").attr('disabled', 'disabled');
+                $("form#formEvent select#statusEdit").attr('disabled', 'disabled');
 
 
             },
