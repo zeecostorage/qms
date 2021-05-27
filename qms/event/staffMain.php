@@ -786,7 +786,7 @@
                             html += '<span class="text">Start</span>';
                         html += '</a>';
                         html += '&nbsp;';
-                        html += '<a href="#" id="buttonExtend" class="btn btn-primary btn-icon-split" onclick="extendSession(this)" data-myval="'+json[i]["waiting_id"]+'" >';
+                        html += '<a href="#" id="buttonExtend" class="btn btn-primary btn-icon-split" onclick="extendSession(this)" data-myval="'+json[i]["appointment_id"]+'" >';
                             html += '<span class="text">Extend</span>';
                         html += '</a>';
                         html += '&nbsp;';
@@ -920,7 +920,7 @@
                             html += '<span class="text">Start</span>';
                         html += '</a>';
                         html += '&nbsp;';
-                        html += '<a href="#" id="buttonExtend" class="btn btn-primary btn-icon-split" onclick="extendSession(this)" data-myval="'+json[i]["waiting_id"]+'" >';
+                        html += '<a href="#" id="buttonExtend" class="btn btn-primary btn-icon-split" onclick="extendSession(this)" data-myval="'+json[i]["appointment_id"]+'" >';
                             html += '<span class="text">Extend</span>';
                         html += '</a>';
                         html += '&nbsp;';
@@ -992,7 +992,7 @@
                             html += '<span class="text">Start</span>';
                         html += '</a>';
                         html += '&nbsp;';
-                        html += '<a href="#" id="buttonExtend" style="display:inline-flex" class="btn btn-primary btn-icon-split" onclick="extendSession(this)" data-myval="'+json[i]["waiting_id"]+'" >';
+                        html += '<a href="#" id="buttonExtend" style="display:inline-flex" class="btn btn-primary btn-icon-split" onclick="extendSession(this)" data-myval="'+json[i]["appointment_id"]+'" >';
                             html += '<span class="text">Extend</span>';
                         html += '</a>';
                         html += '&nbsp;';
