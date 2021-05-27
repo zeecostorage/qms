@@ -17,23 +17,8 @@
     </a>
 
     <?php if($user_type == 1){ ?>
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
-
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" href="index.html">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span></a>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider">
-
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Interface
-        </div>
+        
+        <hr class="sidebar-divider d-none d-md-block">
 
         <li class="nav-item">
             <a class="nav-link" href="../../qms/event/main.php">
@@ -65,6 +50,29 @@
         </div>
     <?php }elseif($user_type == 2){ ?>
 
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <li class="nav-item">
+            <a class="nav-link" href="../../qms/dashboardManager/index.php">
+                <i class="far fa-calendar-check"></i>
+                <span>Dashboard</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+            REPORT
+        </div>
+
+        <!-- Nav Item - Charts -->
+        <li class="nav-item">
+            <a class="nav-link" href="../../qms/report/index.php">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>Report</span></a>
+        </li>
+
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 
@@ -72,7 +80,6 @@
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
         </div>
-
     <?php }elseif($user_type == 3){ ?>
         <hr class="sidebar-divider my-0">
 
@@ -81,6 +88,23 @@
             <a class="nav-link" href="../../qms/event/staffMain.php">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Counter</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+        <!-- Sidebar Toggler (Sidebar) -->
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
+    <?php }else{?>
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Dashboard -->
+        <li class="nav-item active">
+            <a class="nav-link" href="../../qms/event/customerMain.php">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span></a>
         </li>
 
         <!-- Divider -->

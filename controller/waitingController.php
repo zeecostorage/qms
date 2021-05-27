@@ -131,7 +131,7 @@
 				        JOIN
 				    client ON event.company_id = client.email
 				WHERE
-				    waitings.customer_id = '$customer_id'";
+				    waitings.customer_id = '$customer_id'  order by waitings.time asc ";
 
 		$result = mysqli_query($con,$sql);
 
@@ -144,7 +144,7 @@
 					*
 				from 
 					event
-				where status = '1'";
+				where status = '1' and start_date = curdate()";
 
 		$result = mysqli_query($con,$sql);
 

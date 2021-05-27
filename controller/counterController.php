@@ -4,30 +4,22 @@
 	if (isset($_POST['action'])) {
 		$action = $_POST['action'];
 
-		if($action == "getEvent"){
-			getEvent();
-		}else if($action == "getEventDetail"){
+		if($action == "getEventDetail"){
 			getEventDetail();
-		}else if($action == "saveEvent"){
-			saveEvent();
-		}else if($action == "editEvent"){
-			editEvent();
-		}else if($action == "getAppointment"){
-			getAppointment();
 		}else if($action == "getAppointmentCustomer"){
 			getAppointmentCustomer();
-		}else if($action == "saveWaiting"){
-			echo "sini";
-			saveWaiting();
-		}else if($action == "editAppointment"){
-			editAppointment();
-		}else if($action == "getAppointmentDetail"){
-			getAppointmentDetail();
 		}else if($action == "getAppointmentForBooking"){
 			getAppointmentForBooking();
 		}else if($action == "getListCustomer"){
 			getListCustomer();
+		}else if($action == "endSession"){
+			endSession();
+		}else if($action == "updateWaiting"){
+			updateWaiting();
+		}else if($action == "extendSession"){
+			extendSession();
 		}
+
 		else{
 			echo '0';
 		}
@@ -113,41 +105,13 @@
 		return $arr;
 	}
 
-	function getWaitingCustomer($con){
-
-		$customer_id = $_SESSION['email'];
-
-		$sql = "SELECT 
-				    event.id AS event_id,
-				    event.name AS event_name,
-				    appointment.id AS appointment_id,
-				    appointment.name AS appointment_name,
-				    client.fullname as client_name,
-				    waitings.wait_date AS waiting_date,
-				    waitings.time AS waiting_time
-				FROM
-				    waitings
-				        JOIN
-				    appointment ON waitings.appointment_id = appointment.id
-				        JOIN
-				    event ON event.id = appointment.event_id
-				        JOIN
-				    client ON event.company_id = client.email
-				WHERE
-				    waitings.customer_id = '$customer_id'";
-
-		$result = mysqli_query($con,$sql);
-
-		return $result;
-	}
-
 	function getEventCustomer($con){
 
 		$sql = "SELECT 
 					*
 				from 
 					event
-				where status = '1'";
+				where status = '1' and start_date = curdate()";
 
 		$result = mysqli_query($con,$sql);
 
@@ -209,35 +173,6 @@
 		echo json_encode($arr);
 	}
 
-	function saveWaiting(){
-		session_start();
-		include '../config/database.php';
-		$customer_id = $_SESSION['email'];
-		$queuename = $_SESSION['staff_name'];
-
-		$appointment_id = $_POST['appointment_id'];
-		$wait_date 		= $_POST['wait_date'];
-		$time 			= $_POST['time'];
-
-		$sql = "INSERT INTO `queue`.`waitings`
-				(`appointment_id`, queuename,
-				`wait_date`,
-				`time`,
-				customer_id)
-				VALUES ('$appointment_id','$queuename','$wait_date','$time','$customer_id')";
-
-				echo $sql;
-
-		$result = mysqli_query($con,$sql);
-
-		if($result > 0){
-			echo "1";	
-
-		}else{
-			echo "0";
-		}
-	}
-
 	function getAppointmentForBooking(){
 		include '../config/database.php';
 
@@ -282,6 +217,7 @@
 				    appointment.id AS appointment_id,
 				    appointment.name AS appointment_name,
 				    client.fullname as client_name,
+				    waitings.id as waiting_id,
 				    waitings.queuename AS waiting_name,
 				    waitings.wait_date AS waiting_date,
 				    waitings.time AS waiting_time
@@ -294,7 +230,7 @@
 				        JOIN
 				    client ON event.company_id = client.email
 				WHERE
-				    appointment.id = '$appointment_id' and str_to_date(wait_date,'%d-%m-%Y') = curdate()";
+				    appointment.id = '$appointment_id' and str_to_date(wait_date,'%d-%m-%Y') = curdate() and waitings.status != '2' order by waitings.time asc";
 
 		$result = mysqli_query($con,$sql);
 
@@ -306,6 +242,131 @@
 
 		echo json_encode($arr);
 	}
+
+	function updateWaiting(){
+		session_start();
+		include '../config/database.php';
+
+		$id 			= $_POST['id'];
+		$icounterNum 	= $_POST['counterNum'];
+
+		$sql = "UPDATE `queue`.`waitings`
+				SET
+				`counterNum` = '$icounterNum',
+				status = '1'
+				WHERE `id` = '$id'";
+
+		$result = mysqli_query($con,$sql);
+
+		if($result > 0){
+			echo "1";	
+
+		}else{
+			echo "0";
+		}
+	}
+
+	function endSession(){
+		include '../config/database.php';
+
+		// $appointment_id = $_POST['id'];
+
+		$id 				= $_POST['id'];
+		$appointment_id 	= $_POST['appointment_id'];
+
+		$sql = "UPDATE `queue`.`waitings`
+				SET
+				status = '2'
+				WHERE `id` = '$id'";
+
+		$result = mysqli_query($con,$sql);
+
+		$sql = "SELECT 
+				    event.id AS event_id,
+				    event.name AS event_name,
+				    appointment.id AS appointment_id,
+				    appointment.name AS appointment_name,
+				    client.fullname as client_name,
+				    waitings.id as waiting_id,
+				    waitings.queuename AS waiting_name,
+				    waitings.wait_date AS waiting_date,
+				    waitings.time AS waiting_time
+				FROM
+				    waitings
+				        JOIN
+				    appointment ON waitings.appointment_id = appointment.id
+				        JOIN
+				    event ON event.id = appointment.event_id
+				        JOIN
+				    client ON event.company_id = client.email
+				WHERE
+				    appointment.id = '$appointment_id' and str_to_date(wait_date,'%d-%m-%Y') = curdate() and waitings.status != '2' order by waitings.time asc";
+
+		$result = mysqli_query($con,$sql);
+
+		while($row=mysqli_fetch_array($result)){   
+
+			$arr[] = $row;
+
+		}
+
+		echo json_encode($arr);
+	}
+
+	function extendSession(){
+		include '../config/database.php';
+
+		// $appointment_id = $_POST['id'];
+
+		$id 				= $_POST['id'];
+		$appointment_id 	= $_POST['appointment_id'];
+
+		$sql = "SELECT * FROM queue.waitings where appointment_id = '$appointment_id' and id not in ('$id') and status != '2' order by time asc limit 1";
+		
+		$result = mysqli_query($con,$sql);
+		$row=mysqli_fetch_array($result);
+
+		$next_id = $row['id'];
+
+		$sql = "UPDATE `queue`.`waitings`
+				SET
+				time = AddTime(time, '00:05:00')
+				WHERE `id` = '$next_id'";
+
+		$result = mysqli_query($con,$sql);
+
+		$sql = "SELECT 
+				    event.id AS event_id,
+				    event.name AS event_name,
+				    appointment.id AS appointment_id,
+				    appointment.name AS appointment_name,
+				    client.fullname as client_name,
+				    waitings.id as waiting_id,
+				    waitings.queuename AS waiting_name,
+				    waitings.wait_date AS waiting_date,
+				    waitings.time AS waiting_time
+				FROM
+				    waitings
+				        JOIN
+				    appointment ON waitings.appointment_id = appointment.id
+				        JOIN
+				    event ON event.id = appointment.event_id
+				        JOIN
+				    client ON event.company_id = client.email
+				WHERE
+				    appointment.id = '$appointment_id' and str_to_date(wait_date,'%d-%m-%Y') = curdate() and waitings.status != '2' order by waitings.time asc";
+
+		$result = mysqli_query($con,$sql);
+
+		while($row=mysqli_fetch_array($result)){   
+
+			$arr[] = $row;
+
+		}
+
+		echo json_encode($arr);
+	}
+
 
 	function mailSender($to_email, $subject, $body){
 		$headers = "From: izzatjohari94@gmail.com";

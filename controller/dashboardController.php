@@ -100,7 +100,7 @@
 					*
 				from 
 					event
-				where company_id = '$company_id' and status = '3'";
+				where company_id = '$company_id' and status = '3' order by start_date asc";
 
 		$result = mysqli_query($con,$sql);
 

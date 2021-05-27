@@ -29,7 +29,7 @@
 		$_SESSION['company_id'] = $company_id;
 		
 		if($user_type == 1){
-			echo "<script>window.location.href='../dashboardStaff/index.php'; </script>";
+			echo "<script>window.location.href='../event/main.php'; </script>";
 		}else if($user_type == 2){
 			echo "<script>window.location.href='../dashboardManager/index.php'; </script>";
 		}else if($user_type == 3){

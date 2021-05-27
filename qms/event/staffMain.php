@@ -34,6 +34,9 @@
         div#listAllEvent{
             display: none;
         }
+        #buttonExtend{
+            display: none;
+        }
     </style>
 
     <!-- Page Wrapper -->
@@ -85,12 +88,12 @@
 	                                    <input type="hidden" name="mode" id="mode" value="1">
 	                                    <input type="hidden" name="id" id="id">
 	                                    <div class="form-group">
-	                                        <label for="name">Name</label>
+	                                        <label>Name</label>
 	                                        <input type="text" class="form-control form-control-user" id="name" name="name" value="<?php echo getStaffDetail($con);?>" 
 	                                            placeholder="Name *" readonly>
 	                                    </div>
 	                                    <div class="form-group">
-	                                        <label for="description">Counter Number</label>
+	                                        <label>Counter Number</label>
 	                                        <input type="text" class="form-control form-control-user" id="counter_no" name="counter_no"
 	                                            placeholder="Counter Number *" required>
 	                                    </div>
@@ -385,70 +388,10 @@
                                     <input type="hidden" name="action" id="action">
                                     <input type="hidden" name="mode" id="mode" value="1">
                                     <input type="hidden" name="id" id="id">
+                                    <input type="hidden" name="counterNum" id="counterNum">
                                     <input type="hidden" name="event_id" id="event_id">
-                                    <div class="form-group">
-                                        <label for="name">Name</label>
-                                        <input type="text" class="form-control form-control-user" id="name" name="name"
-                                            placeholder="Name *" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="description">Description</label>
-                                        <textarea class="form-control form-control-user" id="description" name="description"
-                                            placeholder="Description" required></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="status">Status</label>
-                                        <select class="form-control  form-control-user" id="status" name="status" aria-label="Default select example" required>
-                                          <option value="" selected>Status *</option>
+                                    <input type="hidden" name="appointment_id" id="appointment_id">
 
-                                            <?php
-                                                
-                                                $status = status();
-
-                                                foreach($status as $value) {
-                                                    echo '<option value="'.$value['id'].'">'.$value['name'].'</option>';
-                                                }
-
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <hr>
-                                    <div class="form-group">
-                                        <label for="schedule">[ Booking ]</label>
-                                        <br>
-                                        <button class="btn btn-success" type="button" id="book">10-05-2021</button>&nbsp;
-                                        <button class="btn btn-success" type="button">12-05-2021</button>&nbsp;
-                                        <button class="btn btn-success" type="button">17-05-2021</button>
-                                        <br><br>
-                                        <div id="timeBooking">
-                                            <button class="btn btn-success" type="button">1:00 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">1:15 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">1:30 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">1:45 PM</button><br><br>
-                                            <button class="btn btn-success" type="button">2:00 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">2:15 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">2:30 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">2:45 PM</button><br><br>
-                                            <button class="btn btn-success" type="button">3:00 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">3:15 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">3:30 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">3:45 PM</button><br><br>
-                                            <button class="btn btn-success" type="button">4:00 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">4:15 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">4:30 PM</button>&nbsp;
-                                            <button class="btn btn-success" type="button">4:45 PM</button><br>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    <br>
-                                    <div id="buttonSave">
-                                        <input type="submit" id="submit" class="btn btn-primary" value="Save">
-                                        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
-                                    </div>
-                                    <div id="buttonEdit">
-                                        <input type="button" id="edit" class="btn btn-primary" value="Book">
-                                        <button class="btn btn-secondary" type="button" data-dismiss="modal" id="cancel">Cancel</button>
-                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -537,22 +480,6 @@
             $("form#formEvent select#status").attr('disabled', false);
         });
 
-
-        $("form#formAppointment input#edit").click(function(event){
-            event.preventDefault();
-            $("form#formAppointment div#buttonSave").show();
-            $("form#formAppointment div#buttonEdit").hide();
-
-            $("form#formAppointment input#name").attr('readonly', false);
-            $("form#formAppointment textarea#description").attr('readonly', false);
-            $("form#formAppointment select#status").attr('disabled', false);
-            $("form#formAppointment select#timeMonday").attr('disabled', false);
-            $("form#formAppointment select#timeTuesday").attr('disabled', false);
-            $("form#formAppointment select#timeWednesday").attr('disabled', false);
-            $("form#formAppointment select#timeThursday").attr('disabled', false);
-            $("form#formAppointment select#timeFriday").attr('disabled', false);
-        });
-
         $("form#formEvent input#submit").click(function(event){
             event.preventDefault();
 
@@ -607,74 +534,6 @@
                 $("form#formEvent input#action").val("editEvent");
 
                 var form_value = $('#formEvent').serialize();
-                console.log(form_value);
-
-                jQuery.ajax({
-                    type : "post",
-                    url : "../../controller/eventController.php",
-                    data : form_value,
-                    // dataType : 'json',
-                    // async: false,
-                    success:function(data){
-
-                        alert("Successfully edit appointment.");
-                        $("#cancel").click();
-                        location.reload();
-                        // cancel
-                    },
-                    error: function(msg) {
-                    }
-                });
-            }else if(flag == 1){
-                alert("Please insert the mandatory field");
-            }
-        });
-        
-        $("form#formAppointment input#submit").click(function(event){
-            event.preventDefault();
-
-            var name            = $("form#formAppointment input#name").val();
-            var status          = $("form#formAppointment select#status").val();
-            var mode            = $("form#formAppointment input#mode").val();
-
-            var flag = 0;
-
-            if(name == ""){
-                var flag = 1;
-            }
-            if(status == ""){
-                var flag = 1;
-            }
-            if(flag == 0 && mode != "2"){
-                console.log("save");
-                $("form#formAppointment input#action").val("saveAppointment");
-
-                var form_value = $('#formAppointment').serialize();
-                console.log(form_value);
-
-                jQuery.ajax({
-                    type : "post",
-                    url : "../../controller/eventController.php",
-                    data : form_value,
-                    // dataType : 'json',
-                    // async: false,
-                    success:function(data){
-
-                        alert("Successfully save appointment.");
-                        $("#cancel").click();
-                        location.reload();
-                        // cancel
-                    },
-                    error: function(msg) {
-                    }
-                });
-
-            }else if(flag == 0 && mode == "2"){
-                console.log("edit");
-
-                $("form#formAppointment input#action").val("editAppointment");
-
-                var form_value = $('#formAppointment').serialize();
                 console.log(form_value);
 
                 jQuery.ajax({
@@ -911,33 +770,255 @@
                 var json = JSON.parse(data);
                 console.log(data);
 
-                
+                var html = "";
+
+                for(var i = 0; i < json.length; i++){
+                    if(i == 0){
+                        html += "<tr>";
+                        html += "<td>"+json[i]["waiting_name"];
+                        html += "</td>";
+                        html += "<td>"+json[i]["waiting_date"];
+                        html += "</td>";
+                        html += "<td>"+json[i]["waiting_time"];
+                        html += "</td>";
+                        html += "<td>";
+                        html += '<a href="#" id="buttonStart" class="btn btn-success btn-icon-split" onclick="startSession(this)" data-myval="'+json[i]["waiting_id"]+'" >';
+                            html += '<span class="text">Start</span>';
+                        html += '</a>';
+                        html += '&nbsp;';
+                        html += '<a href="#" id="buttonExtend" class="btn btn-primary btn-icon-split" onclick="extendSession(this)" data-myval="'+json[i]["waiting_id"]+'" >';
+                            html += '<span class="text">Extend</span>';
+                        html += '</a>';
+                        html += '&nbsp;';
+                        html += '<a href="#" id="buttonFinish" class="btn btn-warning btn-icon-split" onclick="endSession(this)" data-myval="'+json[i]["appointment_id"]+'" >';
+                            html += '<span class="text">Finish</span>';
+                        html += '</a>';
+                        html += '&nbsp;&nbsp;<span id="timer"></span>';
+
+                        html += "</td>";
+                        html += "</tr>";
+                    }else{
+
+                        html += "<tr>";
+                        html += "<td>"+json[i]["waiting_name"];
+                        html += "</td>";
+                        html += "<td>"+json[i]["waiting_date"];
+                        html += "</td>";
+                        html += "<td>"+json[i]["waiting_time"];
+                        html += "</td>";
+                        html += "<td>&nbsp;";
+                        html += "</td>";
+                        html += "</tr>";
+                    }
+                }
+
+               	$("#customerList").html(html);
+
+            },
+            error: function(msg) {
+            }
+        });
+    }
+    
+    var interval;
+
+    function startSession(value){
+        $("#buttonStart").hide();
+        $("#buttonExtend").css("display","inline-flex");
+
+        var id = value.getAttribute('data-myval');
+
+        var timer2 = "15:00";
+
+        interval = setInterval(function() {
+            var timer = timer2.split(':');
+            //by parsing integer, I avoid all extra string processing
+            var minutes = parseInt(timer[0], 10);
+            var seconds = parseInt(timer[1], 10);
+            --seconds;
+            minutes = (seconds < 0) ? --minutes : minutes;
+            seconds = (seconds < 0) ? 59 : seconds;
+            seconds = (seconds < 10) ? '0' + seconds : seconds;
+            //minutes = (minutes < 10) ?  minutes : minutes;
+            $('#timer').html("[ Timer 00:"+minutes + ':' + seconds+" ]");
+            if (minutes < 0) clearInterval(interval);
+            //check if both minutes and seconds are 0
+            if ((seconds <= 0) && (minutes <= 0)) clearInterval(interval);
+            timer2 = minutes + ':' + seconds;
+
+
+            // if(minutes + ':' + seconds == "10:00"){
+            //     alert("10 Minutes more!!");
+            // }
+        }, 1000);
+
+
+        var counter_no = $("#counter_no").val();
+
+        $("form#formAppointment input#action").val("updateWaiting");
+        $("form#formAppointment input#id").val(id);
+        $("form#formAppointment input#counterNum").val(counter_no);
+
+        var form_value = $('#formAppointment').serialize();
+
+        jQuery.ajax({
+            type : "post",
+            url : "../../controller/counterController.php",
+            data : form_value,
+            // dataType : 'json',
+            // async: false,
+            success:function(data){
+
+                // $("#customerList").html(html);
+
+            },
+            error: function(msg) {
+            }
+        });
+    }
+
+
+    function endSession(value){
+        clearInterval(interval);
+        $('#timer').html("");
+
+        $("#listCustomer").show();
+
+        var appointment_id = value.getAttribute('data-myval');
+
+        $("form#formAppointment input#action").val("endSession");
+        // $("form#formAppointment input#id").val(id);
+        $("form#formAppointment input#appointment_id").val(appointment_id);
+        
+
+        var form_value = $('#formAppointment').serialize();
+
+        jQuery.ajax({
+            type : "post",
+            url : "../../controller/counterController.php",
+            data : form_value,
+            // dataType : 'json',
+            // async: false,
+            success:function(data){
+
+                var json = JSON.parse(data);
+                console.log(data);
 
                 var html = "";
 
                 for(var i = 0; i < json.length; i++){
-                	html += "<tr>";
-                	html += "<td>"+json[i]["waiting_name"];
-                	html += "</td>";
-                	html += "<td>"+json[i]["waiting_date"];
-                	html += "</td>";
-                	html += "<td>"+json[i]["waiting_time"];
-                	html += "</td>";
-                	html += "<td>";
+                    if(i == 0){
+                        html += "<tr>";
+                        html += "<td>"+json[i]["waiting_name"];
+                        html += "</td>";
+                        html += "<td>"+json[i]["waiting_date"];
+                        html += "</td>";
+                        html += "<td>"+json[i]["waiting_time"];
+                        html += "</td>";
+                        html += "<td>";
+                        html += '<a href="#" id="buttonStart" class="btn btn-success btn-icon-split" onclick="startSession(this)" data-myval="'+json[i]["waiting_id"]+'" >';
+                            html += '<span class="text">Start</span>';
+                        html += '</a>';
+                        html += '&nbsp;';
+                        html += '<a href="#" id="buttonExtend" class="btn btn-primary btn-icon-split" onclick="extendSession(this)" data-myval="'+json[i]["waiting_id"]+'" >';
+                            html += '<span class="text">Extend</span>';
+                        html += '</a>';
+                        html += '&nbsp;';
+                        html += '<a href="#" id="buttonFinish" class="btn btn-warning btn-icon-split" onclick="endSession(this)" data-myval="'+json[i]["appointment_id"]+'" >';
+                            html += '<span class="text">Finish</span>';
+                        html += '</a>';
+                        html += '&nbsp;&nbsp;<span id="timer"></span>';
 
-                                html += '<a href="#" id="appointment" class="btn btn-success btn-icon-split" onclick="listAppointment(this)" data-myval="" >';
-                                    html += '<span class="text">Start</span>';
-                                html += '</a>';
-                                html += '&nbsp;';
-                                html += '<a href="#" id="appointment" class="btn btn-warning btn-icon-split" onclick="listAppointment(this)" data-myval="" >';
-                                    html += '<span class="text">End</span>';
-                                html += '</a>';
+                        html += "</td>";
+                        html += "</tr>";
+                    }else{
 
-                	html += "</td>";
-                	html += "</tr>";
+                        html += "<tr>";
+                        html += "<td>"+json[i]["waiting_name"];
+                        html += "</td>";
+                        html += "<td>"+json[i]["waiting_date"];
+                        html += "</td>";
+                        html += "<td>"+json[i]["waiting_time"];
+                        html += "</td>";
+                        html += "<td>&nbsp;";
+                        html += "</td>";
+                        html += "</tr>";
+                    }
                 }
 
-               	$("#customerList").html(html);
+                $("#customerList").html(html);
+
+            },
+            error: function(msg) {
+            }
+        });
+    }
+
+    function extendSession(value){
+        var appointment_id = value.getAttribute('data-myval');
+
+        $("form#formAppointment input#action").val("extendSession");
+        // $("form#formAppointment input#id").val(id);
+        $("form#formAppointment input#appointment_id").val(appointment_id);
+        
+
+        var form_value = $('#formAppointment').serialize();
+
+        jQuery.ajax({
+            type : "post",
+            url : "../../controller/counterController.php",
+            data : form_value,
+            // dataType : 'json',
+            // async: false,
+            success:function(data){
+
+                var json = JSON.parse(data);
+                console.log(data);
+
+                var html = "";
+
+                for(var i = 0; i < json.length; i++){
+                    if(i == 0){
+                        
+                        html += "<tr>";
+                        html += "<td>"+json[i]["waiting_name"];
+                        html += "</td>";
+                        html += "<td>"+json[i]["waiting_date"];
+                        html += "</td>";
+                        html += "<td>"+json[i]["waiting_time"];
+                        html += "</td>";
+                        html += "<td>";
+                        html += '<a href="#" id="buttonStart" style="display:none" class="btn btn-success btn-icon-split" onclick="startSession(this)" data-myval="'+json[i]["waiting_id"]+'" >';
+                            html += '<span class="text">Start</span>';
+                        html += '</a>';
+                        html += '&nbsp;';
+                        html += '<a href="#" id="buttonExtend" style="display:inline-flex" class="btn btn-primary btn-icon-split" onclick="extendSession(this)" data-myval="'+json[i]["waiting_id"]+'" >';
+                            html += '<span class="text">Extend</span>';
+                        html += '</a>';
+                        html += '&nbsp;';
+                        html += '<a href="#" id="buttonFinish" class="btn btn-warning btn-icon-split" onclick="endSession(this)" data-myval="'+json[i]["appointment_id"]+'" >';
+                            html += '<span class="text">Finish</span>';
+                        html += '</a>';
+                        html += '&nbsp;&nbsp;<span id="timer"></span>';
+
+                        html += "</td>";
+                        html += "</tr>";
+                    }else{
+
+                        html += "<tr>";
+                        html += "<td>"+json[i]["waiting_name"];
+                        html += "</td>";
+                        html += "<td>"+json[i]["waiting_date"];
+                        html += "</td>";
+                        html += "<td>"+json[i]["waiting_time"];
+                        html += "</td>";
+                        html += "<td>&nbsp;";
+                        html += "</td>";
+                        html += "</tr>";
+                    }
+                }
+
+                $("#customerList").html(html);
 
             },
             error: function(msg) {
